@@ -26,7 +26,7 @@ def filtro_media(imagen, tamano_kernel:int):
             # calcular promedio para cada canal
             if canales > 1:
                 for c in range(canales):
-                    valor_medio = int(np.median(area[:, :, c]))
+                    valor_medio = int(np.mean(area[:, :, c]))
                     imagen_filtrada[y, x, c] = valor_medio
             else:
                 valor_medio = int(np.mean(area))
@@ -37,7 +37,7 @@ def filtro_media(imagen, tamano_kernel:int):
 if __name__ == "__main__":
     # carga la imagen usando OpenCV
     imagen_original = cv2.imread('C:/Users/Hp245-User/Desktop/openCV/images/ruido1.jpg')
-    imagen_original = cv2.cvtColor(imagen_original, cv2.COLOR_RGB2GRAY)
+    # imagen_original = cv2.cvtColor(imagen_original, cv2.COLOR_RGB2GRAY)
 
     tamano_kernel = 3
     imagen_filtrada_personalizada = filtro_media(imagen_original, tamano_kernel)
