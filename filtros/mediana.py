@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-def filtro_media(imagen, tamano_kernel:int):
+def filtro_mediana(imagen, tamano_kernel:int):
     if tamano_kernel % 2 == 0:
         tamano_kernel += 1
 
@@ -21,15 +21,14 @@ def filtro_media(imagen, tamano_kernel:int):
         for x in range(margen, ancho - margen):
             # inclusivo inferior y exclusivo superior
             area = imagen[y - margen: y + margen + 1, x - margen:x + margen + 1]
-            # print(area.shape)
 
-            # calcular promedio para cada canal
+            # calcular mediana para cada canal
             if canales > 1:
                 for c in range(canales):
-                    valor_medio = int(np.median(area[:, :, c]))
+                    valor_medio = np.median(area[:, :, c])
                     imagen_filtrada[y, x, c] = valor_medio
             else:
-                valor_medio = int(np.mean(area))
+                valor_medio = np.median(area)
                 imagen_filtrada[y, x] = valor_medio
 
     return imagen_filtrada
@@ -40,10 +39,10 @@ if __name__ == "__main__":
     imagen_original = cv2.cvtColor(imagen_original, cv2.COLOR_RGB2GRAY)
 
     tamano_kernel = 3
-    imagen_filtrada_personalizada = filtro_media(imagen_original, tamano_kernel)
+    imagen_filtrada_personalizada = filtro_mediana(imagen_original, tamano_kernel)
 
     # funcion de openCV
-    imagen_filtrada_opencv = cv2.blur(imagen_original, (tamano_kernel, tamano_kernel))
+    imagen_filtrada_opencv = cv2.medianBlur(imagen_original, tamano_kernel)
 
     cv2.imshow('Imagen Original', imagen_original)
     cv2.imshow('Imagen Filtrada (Personalizado)', imagen_filtrada_personalizada)
