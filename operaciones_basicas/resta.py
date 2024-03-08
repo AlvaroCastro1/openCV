@@ -20,8 +20,8 @@ def rest_images(image1, image2, modo: str):
     # resta pixel a pixel
 
     result = np.zeros_like(img1, dtype=np.uint8)
-    # float64 para + y -
-    result_promedio = np.zeros_like(img1)
+    # int16 para + y -
+    result_promedio = np.zeros_like(img1, dtype=np.int16)
 
     for i in range(result.shape[0]):
         for j in range(result.shape[1]):
@@ -45,6 +45,8 @@ def rest_images(image1, image2, modo: str):
                     result_promedio[i, j, k] = resta_entre_pixel
 
     if modo == "promedio":
+        print(result_promedio.dtype)
+        
         for canal in range(result_promedio.shape[2]):
             max_valor = np.max(result_promedio[:, :, canal])
             min_valor = np.min(result_promedio[:, :, canal])
@@ -52,8 +54,8 @@ def rest_images(image1, image2, modo: str):
 
             for i in range(result.shape[0]):
                 for j in range(result.shape[1]):
-                    result[i, j, canal] = ((result_promedio[i, j, canal] - min_valor) / (max_valor - min_valor)) * 255
-                    # result[i, j, canal] = ((result_promedio[i, j, canal] - min_valor) / (max_valor)) * 255
+                    # result[i, j, canal] = ((result_promedio[i, j, canal] - min_valor) / (max_valor - min_valor)) * 255
+                    result[i, j, canal] = ((result_promedio[i, j, canal] - min_valor) / (max_valor)) * 255
 
 
     # print(f"{img1.shape} {img2.shape}")

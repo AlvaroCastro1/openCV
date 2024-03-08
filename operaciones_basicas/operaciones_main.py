@@ -4,7 +4,7 @@ from resta import rest_images
 from multi import multiplicar_imagen
 from division import division_imagen
 
-img1 = "C:/Users/Hp245-User/Desktop/openCV/images/LC1.jpeg"
+img1 = "C:/Users/Hp245-User/Desktop/openCV/images/lc3.tiff"
 img2 = "C:/Users/Hp245-User/Desktop/openCV/images/lenacolor.png"
 
 imagen1 = cv2.imread(img1)
@@ -28,16 +28,16 @@ ciclico
 promedio
 """
 
-resultado = sum_images(img1, img2,"promedio")
-cv2.imshow('Imagen Suma', resultado)
+# resultado = sum_images(img1, img2,"promedio")
+# cv2.imshow('Imagen Suma', resultado)
 
-# resultado = rest_images(img2, img1,"promedio")
+# resultado = rest_images(img1, img2,"promedio")
 # cv2.imshow('Imagen Resta', resultado)
 
-# resultado = multiplicar_imagen(img1, 100,"promedio")
+# resultado = multiplicar_imagen(img1, 3,"promedio")
 # cv2.imshow('Imagen Multiplicacion', resultado)
 
-resultado = division_imagen(img1, 1,"truncar")
+resultado = division_imagen(img1, 0.3,"promedio")
 cv2.imshow('Imagen division', resultado)
 
 
