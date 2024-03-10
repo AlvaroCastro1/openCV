@@ -3,8 +3,8 @@ import cv2
 
 def operacion_or(imagen1, imagen2):
     # Cargando las imágenes
-    img1 = cv2.imread(imagen1)
-    img2 = cv2.imread(imagen2)
+    img1 = imagen1
+    img2 = imagen2
     print(f"{img1.shape} {img2.shape}")
 
     # Verificando que las imágenes se cargaron correctamente
@@ -47,15 +47,11 @@ if __name__ == "__main__":
     imagen2 = cv2.imread(image2_path)
     imagen1 = cv2.imread(image1_path)
 
-    resultado, resultado_cv2= operacion_or(image2_path, image1_path)
+    resultado = operacion_or(imagen2, imagen1)
 
-    
-    print(np.max(resultado))
-    print(np.max(resultado_cv2))
     # Mostrar las imágenes originales y el resultado
     cv2.imshow('Imagen 1', imagen1)
     cv2.imshow('Imagen 2', imagen2)
     cv2.imshow('Resultado', resultado)
-    cv2.imshow('ResultadoCV', resultado_cv2)
     cv2.waitKey(0)
     cv2.destroyAllWindows()

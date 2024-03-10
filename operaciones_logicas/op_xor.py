@@ -3,8 +3,8 @@ import cv2
 
 def operacion_xor(imagen1, imagen2):
     # Cargando las imágenes
-    img1 = cv2.imread(imagen1)
-    img2 = cv2.imread(imagen2)
+    img1 = imagen1
+    img2 = imagen2
     print(f"{img1.shape} {img2.shape}")
 
     # Verificando que las imágenes se cargaron correctamente
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     imagen2 = cv2.imread(image2_path)
     imagen1 = cv2.imread(image1_path)
 
-    resultado= operacion_xor(image2_path, image1_path)
+    resultado= operacion_xor(imagen2, imagen1)
     
     print(np.max(resultado))
     # Mostrar las imágenes originales y el resultado
