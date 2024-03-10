@@ -3,9 +3,9 @@ import cv2
 
 def operacion_not(imagen1):
     # Cargando las imágenes
-    img1 = cv2.imread(imagen1)
+    img1 = imagen1
+    img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
     print(f"{img1.shape}")
-
     # Verificando que las imágenes se cargaron correctamente
     if img1 is None:
         print("Error!/nNo se pudo cargar alguna de las imagenes")
@@ -39,7 +39,7 @@ if __name__ == "__main__":
     
     imagen1 = cv2.imread(image1_path)
 
-    resultado= operacion_not(image1_path)
+    resultado= operacion_not(imagen1)
     
     print(np.max(resultado))
     # Mostrar las imágenes originales y el resultado
