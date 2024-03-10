@@ -28,16 +28,16 @@ ciclico
 promedio
 """
 
-# resultado = sum_images(img1, img2,"promedio")
-# cv2.imshow('Imagen Suma', resultado)
+resultado = sum_images(imagen1, imagen2,"promedio")
+cv2.imshow('Imagen Suma', resultado)
 
-# resultado = rest_images(img1, img2,"promedio")
-# cv2.imshow('Imagen Resta', resultado)
+resultado = rest_images(imagen1, imagen2,"promedio")
+cv2.imshow('Imagen Resta', resultado)
 
-# resultado = multiplicar_imagen(img1, 3,"promedio")
-# cv2.imshow('Imagen Multiplicacion', resultado)
+resultado = multiplicar_imagen(imagen1, 3,"promedio")
+cv2.imshow('Imagen Multiplicacion', resultado)
 
-resultado = division_imagen(img1, 0.3,"promedio")
+resultado = division_imagen(imagen1, 0.3,"promedio")
 cv2.imshow('Imagen division', resultado)
 
 

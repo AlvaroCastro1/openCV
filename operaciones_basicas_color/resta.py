@@ -3,8 +3,8 @@ import numpy as np
 
 def rest_images(image1, image2, modo: str):
     # Cargando las imágenes
-    img1 = cv2.imread(image1)
-    img2 = cv2.imread(image2)
+    img1 = image1
+    img2 = image2
     print(f"{img1.shape} {img2.shape}")
 
     # Verificando que las imágenes se cargaron correctamente
@@ -58,19 +58,22 @@ def rest_images(image1, image2, modo: str):
                     result[i, j, canal] = ((result_promedio[i, j, canal] - min_valor) / (max_valor)) * 255
 
 
-    # print(f"{img1.shape} {img2.shape}")
-    # cv2.imshow("Suma de Imagenes", result)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+
     return result
 
 if __name__ == "__main__":
     image2_path = "C:/Users/Hp245-User/Desktop/openCV/images/patos.png"
     image1_path = "C:/Users/Hp245-User/Desktop/openCV/images/lenacolor.png"
 
+    image1 = cv2.imread(image1_path)
+    image2 = cv2.imread(image2_path)
     """
     truncar
     ciclico
     promedio
     """
-    rest_images(image1_path, image2_path,"promedio")
+    r = rest_images(image1, image2,"promedio")
+
+    cv2.imshow("Suma de Imagenes", r)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()

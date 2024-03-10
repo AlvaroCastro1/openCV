@@ -3,8 +3,8 @@ import numpy as np
 
 def sum_images(image1, image2, modo: str):
     # Cargando las imágenes
-    img1 = cv2.imread(image1)
-    img2 = cv2.imread(image2)
+    img2 = image2
+    img1 = image1
     print(f"{img1.shape} {img2.shape}")
 
     # Verificando que las imágenes se cargaron correctamente
@@ -65,9 +65,16 @@ if __name__ == "__main__":
     image2_path = "C:/Users/Hp245-User/Desktop/openCV/images/patos.png"
     image1_path = "C:/Users/Hp245-User/Desktop/openCV/images/lenacolor.png"
 
+    image1 = cv2.imread(image1_path)
+    image2 = cv2.imread(image2_path)
     """
     truncar
     ciclico
     promedio
     """
-    sum_images(image1_path, image2_path,"promedio")
+    r = sum_images(image1, image2,"promedio")
+
+    cv2.imshow("Suma de Imagenes", r)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
