@@ -39,6 +39,11 @@ def multiplicar_imgEsquinaNegro(imagen_ruta: str):
     imagen = cv2.cvtColor(imagen, cv2.COLOR_BGR2GRAY)
     
     esquina = crear_imgCuadradoEsquinaNegro(imagen_ruta)
+    cv2.namedWindow("esquina", cv2.WINDOW_NORMAL)
+    cv2.imshow("esquina", esquina)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    return multiplicar(imagen, esquina)
     return cv2.multiply(imagen, esquina)
 
 def restar_imgCentroBlanco(imagen_ruta: str):
@@ -88,6 +93,18 @@ def restar_centroAleatorio_fondoNegro(imagen_ruta: str):
     imagen_centroAleatorio_fondoNegro = crear_centroAleatorio_fondoNegro(imagen_ruta)
 
     return cv2.subtract(imagen, imagen_centroAleatorio_fondoNegro)
+
+def multiplicar(imagen1, imagen2):
+    # Crear una imagen vacía para el resultado
+    resultado = np.zeros_like(imagen1)
+    
+    # Multiplicar las imágenes píxel a píxel y asegurarse de que estén en el rango de 0 a 255
+    for i in range(imagen1.shape[0]):
+        for j in range(imagen1.shape[1]):
+            valor = imagen1[i, j] * imagen2[i, j]
+            resultado[i, j] = valor
+            
+    return resultado
 
 ruta_amarilla = "C:/Users/Hp245-User/Desktop/openCV/images/amarilla.png"
 
