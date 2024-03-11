@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import random
+import matplotlib.pyplot as plt
 
 def crear_imgCuadradoEsquinaNegro(imagen_ruta: str):
     imagen = cv2.imread(imagen_ruta)
@@ -32,6 +33,13 @@ def crear_imgCentroBlanco(imagen_ruta: str):
     # Color del cuadrado (en formato BGR)
     cv2.rectangle(imagen_centroBlanco, (x_cuadrado, y_cuadrado), (3*x_cuadrado, 3*y_cuadrado), (255, 255, 255), -1)
     return imagen_centroBlanco
+
+def multiplicar_imgEsquinaNegro(imagen_ruta: str):
+    imagen = cv2.imread(imagen_ruta)
+    imagen = cv2.cvtColor(imagen, cv2.COLOR_BGR2GRAY)
+    
+    esquina = crear_imgCuadradoEsquinaNegro(imagen_ruta)
+    return cv2.multiply(imagen, esquina)
 
 def restar_imgCentroBlanco(imagen_ruta: str):
     imagen = cv2.imread(imagen_ruta)
@@ -81,9 +89,32 @@ def restar_centroAleatorio_fondoNegro(imagen_ruta: str):
 
     return cv2.subtract(imagen, imagen_centroAleatorio_fondoNegro)
 
-resultado = restar_centroAleatorio_fondoNegro("C:/Users/Hp245-User/Desktop/openCV/images/amarilla.png")
-print(resultado.shape)
-cv2.namedWindow('Imagen resulatado', cv2.WINDOW_NORMAL)
-cv2.imshow("Imagen resulatado", resultado)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+ruta_amarilla = "C:/Users/Hp245-User/Desktop/openCV/images/amarilla.png"
+
+# Obtener resultados
+resultado1 = multiplicar_imgEsquinaNegro(ruta_amarilla)
+resultado2 = restar_imgCentroBlanco(ruta_amarilla)
+resultado3 = sumar_centro130(ruta_amarilla)
+resultado4 = restar_centroAleatorio_fondoNegro(ruta_amarilla)
+
+# Mostrar los resultados en subplots
+plt.figure(1)
+
+plt.subplot(221)  # 4 filas, 1 columna, posición 1
+plt.imshow(cv2.cvtColor(resultado1, cv2.COLOR_BGR2RGB))
+plt.title("Imagen Esquina Negro")
+
+plt.subplot(222)  # 4 filas, 1 columna, posición 2
+plt.imshow(cv2.cvtColor(resultado2, cv2.COLOR_BGR2RGB))
+plt.title("Imagen Centro Blanco")
+
+plt.subplot(223)  # 4 filas, 1 columna, posición 3
+plt.imshow(cv2.cvtColor(resultado3, cv2.COLOR_BGR2RGB))
+plt.title("Centro 130 Fondo Aleatorio")
+
+plt.subplot(224)  # 4 filas, 1 columna, posición 4
+plt.imshow(cv2.cvtColor(resultado4, cv2.COLOR_BGR2RGB))
+plt.title("Centro Aleatorio Fondo Negro")
+
+plt.tight_layout()
+plt.show()
