@@ -111,27 +111,27 @@ plt.figure(1)
 
 plt.subplot(321)  # 3 filas, 2 columnas, posición 1
 plt.imshow(cv2.cvtColor(resultado1, cv2.COLOR_BGR2RGB))
-plt.title("Imagen + Centro Negro")
+plt.title("Imagen+ Centro Negro")
 
 plt.subplot(322)  # 3 filas, 2 columnas, posición 2
 plt.imshow(cv2.cvtColor(resultado2, cv2.COLOR_BGR2RGB))
-plt.title("Imagen + Centro Blanco")
+plt.title("Imagen+ Centro Blanco")
 
 plt.subplot(323)  # 3 filas, 2 columnas, posición 3
 plt.imshow(cv2.cvtColor(resultado3, cv2.COLOR_BGR2RGB))
-plt.title("Imagen - Centro Negro")
+plt.title("Imagen- Centro Negro")
 
 plt.subplot(324)  # 3 filas, 2 columnas, posición 4
 plt.imshow(cv2.cvtColor(resultado4, cv2.COLOR_BGR2RGB))
-plt.title("Imagen - Centro Blanco")
+plt.title("Imagen- Centro Blanco")
 
 plt.subplot(325)  # 3 filas, 2 columnas, posición 5
 plt.imshow(cv2.cvtColor(resultado5, cv2.COLOR_BGR2RGB))
-plt.title("Imagen + Centro 130 Fondo Aleatorio")
+plt.title("Imagen+ Centro 130 Fondo Aleatorio")
 
 plt.subplot(326)  # 3 filas, 2 columnas, posición 5
 plt.imshow(cv2.cvtColor(resultado6, cv2.COLOR_BGR2RGB))
-plt.title("Imagen + Centro 130 Fondo Aleatorio")
+plt.title("Imagen- Centro Aleatorio")
 
 print(resultado1.shape)
 print(resultado2.shape)
