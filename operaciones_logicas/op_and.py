@@ -1,4 +1,5 @@
 import numpy as np
+from emparejamiento import emparejar_canales
 import cv2
 
 def operacion_and(imagen1, imagen2):
@@ -16,6 +17,7 @@ def operacion_and(imagen1, imagen2):
         # redimensionar imagen2 al tamaño de imagen1
         img2 = cv2.resize(img2, (img1.shape[1], img1.shape[0]))
 
+    img1, img2 = emparejar_canales(img1, img2)
     altura, ancho = img1.shape[:2]
     if len(img1.shape) == 3:  # imagen a color
         canales = img1.shape[2]
@@ -44,6 +46,7 @@ if __name__ == "__main__":
     image1_path = "C:/Users/Hp245-User/Desktop/openCV/images/amarilla.png"
     
     imagen2 = cv2.imread(image2_path)
+    imagen2 = cv2.cvtColor(imagen2, cv2.COLOR_BGR2GRAY)
     imagen1 = cv2.imread(image1_path)
 
     resultado = operacion_and(imagen2, imagen1)

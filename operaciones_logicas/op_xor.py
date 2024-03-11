@@ -1,4 +1,5 @@
 import numpy as np
+from emparejamiento import emparejar_canales
 import cv2
 
 def operacion_xor(imagen1, imagen2):
@@ -17,6 +18,7 @@ def operacion_xor(imagen1, imagen2):
         # redimensionar imagen2 al tamaño de imagen1
         img2 = cv2.resize(img2, (img1.shape[1], img1.shape[0]))
 
+    img1, img2 = emparejar_canales(img1, img2)
     altura, ancho = img1.shape[:2]
     if len(img1.shape) == 3:  # imagen a color
         canales = img1.shape[2]
