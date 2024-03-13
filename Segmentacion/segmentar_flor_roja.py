@@ -56,17 +56,17 @@ for i in range(1, N):
 
 # Muestra las imágenes resultantes en ventanas
 cv2.namedWindow("Original", cv2.WINDOW_NORMAL)
-cv2.namedWindow("RGB Channels", cv2.WINDOW_NORMAL)
-cv2.namedWindow("Thresholded RGB", cv2.WINDOW_NORMAL)
-cv2.namedWindow("Segmented Object", cv2.WINDOW_NORMAL)
-cv2.namedWindow("Segmented Edges", cv2.WINDOW_NORMAL)
+cv2.namedWindow("RGB canales", cv2.WINDOW_NORMAL)
+cv2.namedWindow("and", cv2.WINDOW_NORMAL)
+cv2.namedWindow("Objeto Segmentado", cv2.WINDOW_NORMAL)
+cv2.namedWindow("Borde", cv2.WINDOW_NORMAL)
 cv2.namedWindow("Final", cv2.WINDOW_NORMAL)
 
 cv2.imshow("Original", image)
-cv2.imshow("RGB Channels", image_BGR)
-cv2.imshow("Thresholded RGB", image_S.astype(np.uint8) * 255)
-cv2.imshow("Segmented Object", Q.astype(np.uint8) * 255)
-cv2.imshow("Segmented Edges", E.astype(np.uint8) * 255)
+cv2.imshow("RGB canales", image_BGR)
+cv2.imshow("and", image_S.astype(np.uint8) * 255)
+cv2.imshow("Objeto Segmentado", Q.astype(np.uint8) * 255)
+cv2.imshow("Borde", E.astype(np.uint8) * 255)
 cv2.imshow("Final", salida)
 
 cv2.waitKey(0)
