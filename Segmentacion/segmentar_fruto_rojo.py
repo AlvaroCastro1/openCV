@@ -1,48 +1,70 @@
 import cv2
+import numpy as np
 
-# Función de callback para el trackbar
-def nothing(x):
-    pass
+imagen = cv2.imread("C:/Users/Hp245-User/Desktop/openCV/images/frutos_rojos.png")
 
-# Cargar la imagen
-image = cv2.imread("c:/Users/Hp245-User/Desktop/openCV/images/frutos_rojos.png")
+cv2.namedWindow("Original", cv2.WINDOW_NORMAL)
+cv2.imshow("Original", imagen)
 
-# Dividir la imagen en los canales de color
-b, g, r = cv2.split(image)
+b, g, r = cv2.split(imagen)
 
-# Crear ventanas para cada canal de color
-cv2.namedWindow("Rojo", cv2.WINDOW_NORMAL)
-cv2.namedWindow("Verde", cv2.WINDOW_NORMAL)
-cv2.namedWindow("Azul", cv2.WINDOW_NORMAL)
+image_BGR = cv2.hconcat([r, g, b])
+cv2.namedWindow("RGB canales", cv2.WINDOW_NORMAL)
+cv2.imshow("RGB canales", image_BGR)
 
-# Crear trackbars para los umbrales de color
-cv2.createTrackbar('Threshold', 'Rojo', 0, 255, nothing)
-cv2.createTrackbar('Threshold', 'Verde', 0, 255, nothing)
-cv2.createTrackbar('Threshold', 'Azul', 0, 255, nothing)
 
-while True:
-    # Obtener los valores actuales de los trackbars
-    r_threshold = cv2.getTrackbarPos('Threshold', 'Rojo')
-    g_threshold = cv2.getTrackbarPos('Threshold', 'Verde')
-    b_threshold = cv2.getTrackbarPos('Threshold', 'Azul')
+# Define umbrales para cada canal
+Sr = r > 150
+Sg = g < 120
+Sb = b < 175
 
-    # Aplicar los umbrales a cada canal de color
-    r_filtered = cv2.threshold(r, r_threshold, 255, cv2.THRESH_BINARY)[1]
-    g_filtered = cv2.threshold(g, g_threshold, 255, cv2.THRESH_BINARY)[1]
-    b_filtered = cv2.threshold(b, b_threshold, 255, cv2.THRESH_BINARY)[1]
+imagen_salida_humbrales = np.concatenate((Sr, Sg, Sb), axis=1)
+cv2.namedWindow("Canales con humbral", cv2.WINDOW_NORMAL)
+cv2.imshow("Canales con humbral", imagen_salida_humbrales.astype(np.uint8) * 255)
 
-    # Mostrar las imágenes filtradas en las ventanas correspondientes
-    cv2.imshow("Rojo", r_filtered)
-    cv2.imshow("Verde", g_filtered)
-    cv2.imshow("Azul", b_filtered)
+imagen_and = np.logical_and(Sr, Sg, Sb)
 
-    # Esperar a que se presione una tecla
-    key = cv2.waitKey(1) & 0xFF
+# Elimina regiones pequeñas de la imagen binaria
+(N, M) = imagen_and.shape
+frutos = imagen_and
+for i in range(N):
+    s = np.sum(imagen_and[i, :])
+    if s < 20:
+        frutos[i, :] = 0
 
-    # Salir del bucle si se presiona la tecla 'q'
-    if key == ord("q"):
-        break
+cv2.namedWindow("Frutos Segmentados Bin", cv2.WINDOW_NORMAL)
+cv2.imshow("Frutos Segmentados Bin", frutos.astype(np.uint8) * 255)
 
-# Cerrar todas las ventanas
+# Encuentra los límites del objeto segmentado
+true_indices = np.argwhere(frutos)  # Encuentra los índices de los valores verdaderos en Q
+imin, jmin = true_indices.min(axis=0)  # Obtener el índice mínimo en ambas dimensiones
+imax, jmax = true_indices.max(axis=0)  # Obtener el índice máximo en ambas dimensiones
+
+# Crea una imagen de bordes del objeto segmentado
+bordes_frutos = np.zeros_like(frutos, dtype=np.uint8)
+for i in range(N):
+    for j in range(1, M):
+        if frutos[i, j] != frutos[i, j - 1]:
+            bordes_frutos[i, j] = 1
+            bordes_frutos[i, j - 1] = 1
+
+cv2.namedWindow("Borde de Frutos", cv2.WINDOW_NORMAL)
+cv2.imshow("Borde de Frutos", bordes_frutos.astype(np.uint8) * 255)
+
+for i in range(1, N):
+    for j in range(M):
+        if frutos[i - 1, j] != frutos[i, j]:
+            bordes_frutos[i, j] = 1
+            bordes_frutos[i - 1, j] = 1
+
+imagen_original_bordes = imagen
+for i in range(1, N):
+    for j in range(M):
+        if bordes_frutos[i, j] == 1:
+            imagen_original_bordes[i,j,:]=[255,0,0]
+
+cv2.namedWindow("Final", cv2.WINDOW_NORMAL)
+cv2.imshow("Final", imagen_original_bordes)
+
+cv2.waitKey(0)
 cv2.destroyAllWindows()
-
