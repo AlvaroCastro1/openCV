@@ -13,9 +13,9 @@ cv2.namedWindow("RGB canales", cv2.WINDOW_NORMAL)
 cv2.imshow("RGB canales", image_BGR)
 
 
-Sr = r > 200  # Ajusta este valor según tus necesidades
-Sg = g < 100  # Ajusta este valor según tus necesidades
-Sb = b < 100  # Ajusta este valor según tus necesidades
+Sr = r > 180 
+Sg = g < 110 
+Sb = b < 110 
 
 imagen_salida_humbrales = np.concatenate((Sr, Sg, Sb), axis=1)
 cv2.namedWindow("Canales con humbral", cv2.WINDOW_NORMAL)
