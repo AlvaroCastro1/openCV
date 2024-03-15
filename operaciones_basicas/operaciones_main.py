@@ -1,8 +1,6 @@
 import cv2
 from suma import sum_images
 from resta import rest_images
-from multi import multiplicar_imagen
-from division import division_imagen
 
 img1 = "C:/Users/Hp245-User/Desktop/openCV/images/lc3.tiff"
 img2 = "C:/Users/Hp245-User/Desktop/openCV/images/amarilla.png"
@@ -43,24 +41,24 @@ ciclico
 promedio
 """
 
-suma_truncar = sum_images(img1, img2,"truncar")
-suma_ciclico = sum_images(img1, img2,"ciclico")
-suma_promedio = sum_images(img1, img2,"promedio")
+suma_truncar = sum_images(imagen1, imagen2,"truncar")
+suma_ciclico = sum_images(imagen1, imagen2,"ciclico")
+suma_promedio = sum_images(imagen1, imagen2,"promedio")
 
-resta_truncar = rest_images(img1, img2,"truncar")
-resta_ciclico = rest_images(img1, img2,"ciclico")
-resta_promedio = rest_images(img1, img2,"promedio")
+resta_truncar = rest_images(imagen1, imagen2,"truncar")
+resta_ciclico = rest_images(imagen1, imagen2,"ciclico")
+resta_promedio = rest_images(imagen1, imagen2,"promedio")
 
 plt.figure(figsize=(10, 5))
 
 
 plt.subplot(231)
-plt.imshow(suma_truncar)
+plt.imshow(cv2.cvtColor(suma_truncar, cv2.COLOR_BGR2RGB))
 plt.title('truncar +')
 plt.axis('off')
 
 plt.subplot(232)
-plt.imshow(suma_ciclico)
+plt.imshow(cv2.cvtColor(suma_ciclico, cv2.COLOR_BGR2RGB))
 plt.title('ciclico +')
 plt.axis('off')
 
@@ -80,7 +78,7 @@ plt.title('ciclico -')
 plt.axis('off')
 
 plt.subplot(236)
-plt.imshow(resta_promedio)
+plt.imshow(cv2.cvtColor(resta_promedio, cv2.COLOR_BGR2RGB))
 plt.title('promedio -')
 plt.axis('off')
 

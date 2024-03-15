@@ -7,7 +7,7 @@ def multiplicar_imagen(image: str, constant: int, modo: str):
     if constant >= 255:
         constant = 255
 
-    img1 = cv2.imread(image)
+    img1 = image
 
 
     if img1 is None:

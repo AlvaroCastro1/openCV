@@ -31,13 +31,13 @@ ciclico
 promedio
 """
 
-multi_truncar = multiplicar_imagen(img1, 3,"truncar")
-multi_ciclico = multiplicar_imagen(img1, 3,"ciclico")
-multi_promedio = multiplicar_imagen(img1, 3,"promedio")
+multi_truncar = multiplicar_imagen(imagen1, 3,"truncar")
+multi_ciclico = multiplicar_imagen(imagen1, 3,"ciclico")
+multi_promedio = multiplicar_imagen(imagen1, 3,"promedio")
 
-divi_truncar = division_imagen(img1, 3,"truncar")
-divi_ciclico = division_imagen(img1, 3,"ciclico")
-divi_promedio = division_imagen(img1, 3,"promedio")
+divi_truncar = division_imagen(imagen1, 3,"truncar")
+divi_ciclico = division_imagen(imagen1, 3,"ciclico")
+divi_promedio = division_imagen(imagen1, 3,"promedio")
 
 plt.figure(figsize=(10, 5))
 
