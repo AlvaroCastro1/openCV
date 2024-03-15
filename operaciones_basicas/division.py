@@ -1,12 +1,13 @@
 import cv2
 import numpy as np
+from convert_8216 import transformar
 
 def division_imagen(image1, constant: int, modo: str):
 
     if constant >= 255:
             constant = 255
 
-    img1 = cv2.imread(image1)
+    img1 = image1
 
 
     if img1 is None:
@@ -34,27 +35,20 @@ def division_imagen(image1, constant: int, modo: str):
                     resultado_promedio[i, j, k] = division_entre_pixel
 
     if modo == "promedio":
-        for canal in range(resultado_promedio.shape[2]):
-            max_valor = np.max(resultado_promedio[:, :, canal])
-            min_valor = np.min(resultado_promedio[:, :, canal])
-            print(f"Canal {canal + 1}: {min_valor} - {max_valor}")
+        resultado = transformar(resultado_promedio)
 
-            for i in range(resultado.shape[0]):
-                for j in range(resultado.shape[1]):
-                    resultado[i, j, canal] = ((resultado_promedio[i, j, canal] - min_valor) / (max_valor - min_valor)) * 255
-                    # resultado[i, j, canal] = ((resultado_promedio[i, j, canal] - min_valor) / (max_valor)) * 255
-
-    # cv2.imshow("division de Imagenes", resultado)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
     return resultado
 
 if __name__ == "__main__":
-    image_path = "C:/Users/Hp245-User/Desktop/openCV/images/amarilla.png"
+    image = cv2.imread("C:/Users/Hp245-User/Desktop/openCV/images/amarilla.png")
 
     """
     truncar
     ciclico
     promedio
     """
-    division_imagen(image_path, 3,"truncar")
+    r = division_imagen(image, 3,"promedio")
+    cv2.namedWindow("divi", cv2.WINDOW_NORMAL)
+    cv2.imshow("divi",r)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()

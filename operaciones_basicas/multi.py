@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from convert_8216 import transformar
 
 def multiplicar_imagen(image: str, constant: int, modo: str):
 
@@ -35,19 +36,8 @@ def multiplicar_imagen(image: str, constant: int, modo: str):
                     resultado_promedio[i, j, k] = multi_entre_pixel
 
     if modo == "promedio":
-        for canal in range(resultado_promedio.shape[2]):
-            max_valor = np.max(resultado_promedio[:, :, canal])
-            min_valor = np.min(resultado_promedio[:, :, canal])
-            print(f"Canal {canal + 1}: {min_valor} - {max_valor}")
-
-            for i in range(resultado.shape[0]):
-                for j in range(resultado.shape[1]):
-                    resultado[i, j, canal] = ((resultado_promedio[i, j, canal] - min_valor) / (max_valor - min_valor)) * 255
-                    # resultado[i, j, canal] = ((resultado_promedio[i, j, canal] - min_valor) / (max_valor)) * 255
-
-    # cv2.imshow("Multiplicacion de Imagenes", resultado)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+        resultado = transformar(resultado_promedio)
+        
     return resultado
 
 if __name__ == "__main__":
@@ -58,4 +48,8 @@ if __name__ == "__main__":
     ciclico
     promedio
     """
-    multiplicar_imagen(image_path, 3,"promedio")
+    r = multiplicar_imagen(image_path, 30,"promedio")
+    cv2.namedWindow("multi", cv2.WINDOW_NORMAL)
+    cv2.imshow("multi",r)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
