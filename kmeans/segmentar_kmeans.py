@@ -32,8 +32,8 @@ def kmeans(imagen, k=2, max_iter=100):
 
     for _ in range(max_iter):
         """calcular distancia euclidiana (punto y centroide)
-        pixel -> (n, 1, d) y centroides -> (k, d)
-        realizar la resta
+        matriz de distancias 
+        cada fila es la distancia el punto el respect centroide
         """
         distancias = np.linalg.norm(datos[:, np.newaxis] - centroides, axis=2)
 
@@ -42,10 +42,9 @@ def kmeans(imagen, k=2, max_iter=100):
         cada indice conteiene la distancia que existe entre el cluster y el pixel
         np.argmin -> devuelve el indice con la menor distancia
         """
-        
         etiquetas = np.argmin(distancias, axis=1)
 
-        # actualizar centroides
+        # actualizar centroides con el promedio de cada cluster
         nuevos_centroides = np.array([datos[etiquetas == i].mean(axis=0) for i in range(k)])
 
         # si estan cerca debe terminar la asignacion
