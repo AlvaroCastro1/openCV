@@ -1,0 +1,9 @@
+- traslacion
+- 	
+
+
+
+- interpolacion
+truncado
+vecino mas cercano 
+bilineal
