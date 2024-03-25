@@ -1,13 +1,14 @@
 import sys
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QVBoxLayout, QComboBox
-from PyQt6.QtWidgets import  QPushButton, QDialog, QLabel
+from PyQt6.QtWidgets import  QPushButton, QDialog, QLabel, QLineEdit
 from PyQt6.QtGui import QPixmap
 from PyQt6.uic import loadUi
 
 import cv2
 from operaciones_basicas.suma import sum_images
 from operaciones_basicas.resta import rest_images
+from operaciones_basicas.multi import multiplicar_imagen
 
 class ModoDialog(QDialog):
     #clase para seleccionar modos
@@ -37,6 +38,35 @@ class ModoDialog(QDialog):
     def obtener_modo(self):
         return self.combo_box.currentText()
 
+class NumeroDialog(QDialog):
+    # Clase para ingresar un número flotante
+    def __init__(self):
+        super().__init__()
+
+        layout = QVBoxLayout()
+
+        self.setWindowTitle("Ingresar Número")
+        self.setModal(True)
+
+        self.label = QLabel("Ingrese un número flotante:")
+        layout.addWidget(self.label)
+
+        self.float_edit = QLineEdit()
+        self.float_edit.setPlaceholderText("Ej. 3.14")
+        layout.addWidget(self.float_edit)
+
+        self.btn_confirmar = QPushButton("Confirmar")
+        self.btn_confirmar.clicked.connect(self.accept)
+        layout.addWidget(self.btn_confirmar)
+
+        self.setLayout(layout)
+
+    def obtener_numero(self):
+        try:
+            return float(self.float_edit.text())
+        except ValueError:
+            QMessageBox.warning(self, "Advertencia", "Por favor, ingrese un número flotante válido.")
+            return None
 class miApp(QMainWindow):
 
     def __init__(self):
@@ -50,6 +80,8 @@ class miApp(QMainWindow):
         self.btn_mostrar_img2.clicked.connect(lambda: self.seleccionarYmostrar(self.lb_imagen2))
         self.btn_suma.clicked.connect(self.sumar)
         self.btn_resta.clicked.connect(self.restar)
+        self.btn_division.clicked.connect(self.multiplicar)
+        self.btn_multiplicacion.clicked.connect(self.dividir)
 
     def sumar(self):
         if not self.validar_2_imagenes():
@@ -77,9 +109,51 @@ class miApp(QMainWindow):
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
+    def multiplicar(self):
+        if not self.validar_1_imagen():
+            return
+
+        modo_dialog = ModoDialog()
+        if modo_dialog.exec() == QDialog.DialogCode.Accepted:
+            modo = modo_dialog.obtener_modo()
+
+            numero_dialog = NumeroDialog()
+            if numero_dialog.exec() == QDialog.DialogCode.Accepted:
+                numero = numero_dialog.obtener_numero()
+                if numero is not None:
+                    r = multiplicar_imagen(self.imagen1, numero, modo)
+                    cv2.namedWindow("multiplicacion", cv2.WINDOW_NORMAL)
+                    cv2.imshow("multiplicacion",r)
+                    cv2.waitKey(0)
+                    cv2.destroyAllWindows()
+
+    def dividir(self):
+        if not self.validar_1_imagen():
+            return
+
+        modo_dialog = ModoDialog()
+        if modo_dialog.exec() == QDialog.DialogCode.Accepted:
+            modo = modo_dialog.obtener_modo()
+
+            numero_dialog = NumeroDialog()
+            if numero_dialog.exec() == QDialog.DialogCode.Accepted:
+                numero = numero_dialog.obtener_numero()
+                if numero is not None:
+                    r = multiplicar_imagen(self.imagen1, numero, modo)
+                    cv2.namedWindow("multiplicacion", cv2.WINDOW_NORMAL)
+                    cv2.imshow("multiplicacion",r)
+                    cv2.waitKey(0)
+                    cv2.destroyAllWindows()
+
     def validar_2_imagenes(self):
         if self.imagen1 is None or self.imagen2 is None:
             QMessageBox.warning(self, "Advertencia", "Por favor, seleccione ambas imágenes antes de realizar la operación.")
+            return False
+        return True
+
+    def validar_1_imagen(self):
+        if self.imagen1 is None:
+            QMessageBox.warning(self, "Advertencia", "Por favor, seleccione la imagen 1 antes de realizar la operación.")
             return False
         return True
 
