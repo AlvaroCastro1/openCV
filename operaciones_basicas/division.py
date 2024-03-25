@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from convert_8216 import transformar
+from operaciones_basicas.convert_8216 import transformar
 
 def division_imagen(image1, constant: int, modo: str):
 
@@ -19,20 +19,36 @@ def division_imagen(image1, constant: int, modo: str):
     resultado = np.zeros_like(img1, dtype=np.uint8)
     resultado_promedio = np.zeros_like(img1, dtype=np.uint16)
 
-    for i in range(resultado.shape[0]):
-        for j in range(resultado.shape[1]):
-            for k in range(resultado.shape[2]):
-                division_entre_pixel = int(img1[i, j, k]) / constant
+    if len(img1.shape) == 2:  # Grayscale image
+        for i in range(resultado.shape[0]):
+            for j in range(resultado.shape[1]):
+                division_entre_pixel = int(img1[i, j]) / constant
 
                 if modo=="truncar":
                 #truncar
-                    resultado[i, j, k] = min(int(division_entre_pixel), 255)
+                    resultado[i, j] = min(int(division_entre_pixel), 255)
                 if modo=="ciclico":
                     #ciclico
-                    resultado[i, j, k] = division_entre_pixel % 256 
+                    resultado[i, j] = division_entre_pixel % 256 
                     
                 if modo=="promedio":
-                    resultado_promedio[i, j, k] = division_entre_pixel
+                    resultado_promedio[i, j] = division_entre_pixel
+
+    elif len(img1.shape) == 3:  # Color image
+        for i in range(resultado.shape[0]):
+            for j in range(resultado.shape[1]):
+                for k in range(resultado.shape[2]):
+                    division_entre_pixel = int(img1[i, j, k]) / constant
+
+                    if modo=="truncar":
+                    #truncar
+                        resultado[i, j, k] = min(int(division_entre_pixel), 255)
+                    if modo=="ciclico":
+                        #ciclico
+                        resultado[i, j, k] = division_entre_pixel % 256 
+                        
+                    if modo=="promedio":
+                        resultado_promedio[i, j, k] = division_entre_pixel
 
     if modo == "promedio":
         resultado = transformar(resultado_promedio)
