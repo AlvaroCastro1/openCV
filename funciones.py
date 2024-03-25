@@ -1,0 +1,108 @@
+import sys
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QVBoxLayout, QComboBox
+from PyQt6.QtWidgets import  QPushButton, QDialog, QLabel
+from PyQt6.QtGui import QPixmap
+from PyQt6.uic import loadUi
+
+import cv2
+from operaciones_basicas.suma import sum_images
+from operaciones_basicas.resta import rest_images
+
+class ModoDialog(QDialog):
+    #clase para seleccionar modos
+    def __init__(self):
+        super().__init__()
+
+        layout = QVBoxLayout()
+
+        self.setWindowTitle("Seleccionar Modo")
+        self.setModal(True)
+
+        self.label = QLabel("Seleccione el modo de suma:")
+        layout.addWidget(self.label)
+
+        self.combo_box = QComboBox()
+        self.combo_box.addItem("truncar")
+        self.combo_box.addItem("ciclico")
+        self.combo_box.addItem("promedio")
+        layout.addWidget(self.combo_box)
+
+        self.btn_confirmar = QPushButton("Confirmar")
+        self.btn_confirmar.clicked.connect(self.accept)
+        layout.addWidget(self.btn_confirmar)
+
+        self.setLayout(layout)
+
+    def obtener_modo(self):
+        return self.combo_box.currentText()
+
+class miApp(QMainWindow):
+
+    def __init__(self):
+        super().__init__(flags=Qt.WindowType.Window)
+        loadUi("./main.ui", self)  # Carga la interfaz de usuario desde el archivo
+        self.imagen1=None
+        self.imagen2=None
+
+        # Conecta los botones al método con funciones lambda para pasar la etiqueta
+        self.btn_mostrar_img1.clicked.connect(lambda: self.seleccionarYmostrar(self.lb_imagen1))
+        self.btn_mostrar_img2.clicked.connect(lambda: self.seleccionarYmostrar(self.lb_imagen2))
+        self.btn_suma.clicked.connect(self.sumar)
+        self.btn_resta.clicked.connect(self.restar)
+
+    def sumar(self):
+        if not self.validar_2_imagenes():
+            return
+
+        modo_dialog = ModoDialog()
+        if modo_dialog.exec() == QDialog.DialogCode.Accepted:
+            modo = modo_dialog.obtener_modo()
+            r = sum_images(self.imagen1, self.imagen2, modo)
+            cv2.namedWindow("suma", cv2.WINDOW_NORMAL)
+            cv2.imshow("suma",r)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+    def restar(self):
+        if not self.validar_2_imagenes():
+            return
+
+        modo_dialog = ModoDialog()
+        if modo_dialog.exec() == QDialog.DialogCode.Accepted:
+            modo = modo_dialog.obtener_modo()
+            r = rest_images(self.imagen1, self.imagen2, modo)
+            cv2.namedWindow("resta", cv2.WINDOW_NORMAL)
+            cv2.imshow("resta",r)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+    def validar_2_imagenes(self):
+        if self.imagen1 is None or self.imagen2 is None:
+            QMessageBox.warning(self, "Advertencia", "Por favor, seleccione ambas imágenes antes de realizar la operación.")
+            return False
+        return True
+
+    def mostrar_imagen(self, ruta_imagen, etiqueta_mostrar):
+        self.imagen1 = cv2.imread(ruta_imagen) if etiqueta_mostrar == self.lb_imagen1 else self.imagen1
+        self.imagen2 = cv2.imread(ruta_imagen) if etiqueta_mostrar == self.lb_imagen2 else self.imagen2
+        
+        pixmap = QPixmap(ruta_imagen)
+        
+        # Asigna la imagen al QLabel
+        etiqueta_mostrar.setPixmap(pixmap)
+        etiqueta_mostrar.setScaledContents(True)
+
+    def seleccionarYmostrar(self, etiqueta):
+        # Abre un cuadro de diálogo de archivo para seleccionar una imagen
+        file_dialog = QFileDialog(self)
+        ruta_imagen, _ = file_dialog.getOpenFileName(self, "Seleccionar imagen", "", "Image Files (*.png *.jpg *.bmp *.gif)")
+
+        if ruta_imagen:  # Si el usuario seleccionó una imagen, muéstrala
+            self.mostrar_imagen(ruta_imagen, etiqueta)
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    ventana = miApp()
+    ventana.show()
+    sys.exit(app.exec())
