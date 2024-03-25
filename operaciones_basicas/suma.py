@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from convert_8216 import transformar
+from operaciones_basicas.convert_8216 import transformar
 
 def sum_images(image1, image2, modo: str):
     # Cargando las imágenes
@@ -23,35 +23,48 @@ def sum_images(image1, image2, modo: str):
     result = np.zeros_like(img1, dtype=np.uint8)
     result_promedio = np.zeros_like(img1, dtype=np.uint16)
 
-    for i in range(result.shape[0]):
-        for j in range(result.shape[1]):
-            for k in range(result.shape[2]):
+    if len(result.shape) == 3:  # If it's a color image
+        for i in range(result.shape[0]):
+            for j in range(result.shape[1]):
+                for k in range(result.shape[2]):
+                    suma_entre_pixel= int(img1[i, j, k]) + int(img2[i, j, k])
 
-                suma_entre_pixel= int(img1[i, j, k]) + int(img2[i, j, k])
+                    if modo=="truncar":
+                        #truncar
+                        result[i, j, k] = min(int(suma_entre_pixel), 255)
+                    if modo=="ciclico":
+                        #ciclico
+                        result[i, j, k] = suma_entre_pixel % 256 
+                        
+                    if modo=="promedio":
+                        result_promedio[i, j, k] = suma_entre_pixel
+
+        if modo == "promedio":
+            result = transformar(result_promedio)
+
+    elif len(result.shape) == 2:  # If it's a grayscale image
+        for i in range(result.shape[0]):
+            for j in range(result.shape[1]):
+                suma_entre_pixel= int(img1[i, j]) + int(img2[i, j])
 
                 if modo=="truncar":
-                #truncar
-                    result[i, j, k] = min(int(suma_entre_pixel), 255)
+                    #truncar
+                    result[i, j] = min(int(suma_entre_pixel), 255)
                 if modo=="ciclico":
                     #ciclico
-                    """
-                    se trabaja con el modulo
-                    255 + 1 = 256 -> 256 % 256 = 0
-                    255 + 3 = 258 -> 258 % 256 = 2
-                    """
-                    result[i, j, k] = suma_entre_pixel % 256 
+                    result[i, j] = suma_entre_pixel % 256 
                     
                 if modo=="promedio":
-                    result_promedio[i, j, k] = suma_entre_pixel
+                    result_promedio[i, j] = suma_entre_pixel
 
-    if modo == "promedio":
-        result = transformar(result_promedio)
+        if modo == "promedio":
+            result = transformar(result_promedio)
 
     return result
 
 if __name__ == "__main__":
-    image2 = cv2.imread("C:/Users/Hp245-User/Desktop/openCV/images/patos.png")
-    image1 = cv2.imread("C:/Users/Hp245-User/Desktop/openCV/images/lenacolor.png")
+    image2 = cv2.imread("C:/Users/Hp245-User/Desktop/openCV/images/patos.png",0)
+    image1 = cv2.imread("C:/Users/Hp245-User/Desktop/openCV/images/lenacolor.png",0)
 
     """
     truncar

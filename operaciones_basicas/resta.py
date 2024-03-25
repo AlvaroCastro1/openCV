@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from convert_8216 import transformar
+from operaciones_basicas.convert_8216 import transformar
 
 def rest_images(image1, image2, modo: str):
     # Cargando las imágenes
@@ -24,35 +24,48 @@ def rest_images(image1, image2, modo: str):
     # int16 para + y -
     result_promedio = np.zeros_like(img1, dtype=np.int16)
 
-    for i in range(result.shape[0]):
-        for j in range(result.shape[1]):
-            for k in range(result.shape[2]):
+    if len(result.shape) == 3:  # If it's a color image
+        for i in range(result.shape[0]):
+            for j in range(result.shape[1]):
+                for k in range(result.shape[2]):
+                    resta_entre_pixel= int(img1[i, j, k]) - int(img2[i, j, k])
 
-                resta_entre_pixel= int(img1[i, j, k]) - int(img2[i, j, k])
+                    if modo=="truncar":
+                        #truncar
+                        result[i, j, k] = max(int(resta_entre_pixel), 0)
+                    if modo=="ciclico":
+                        #ciclico
+                        result[i, j, k] = resta_entre_pixel % 256 
+                        
+                    if modo=="promedio":
+                        result_promedio[i, j, k] = resta_entre_pixel
+
+        if modo == "promedio":
+            result = transformar(result_promedio)
+
+    elif len(result.shape) == 2:  # If it's a grayscale image
+        for i in range(result.shape[0]):
+            for j in range(result.shape[1]):
+                resta_entre_pixel= int(img1[i, j]) - int(img2[i, j])
 
                 if modo=="truncar":
-                #truncar
-                    result[i, j, k] = max(int(resta_entre_pixel), 0)
+                    #truncar
+                    result[i, j] = max(int(resta_entre_pixel), 0)
                 if modo=="ciclico":
                     #ciclico
-                    """
-                    se trabaja con el modulo
-                    255 + 1 = 256 -> 256 % 256 = 0
-                    255 + 3 = 258 -> 258 % 256 = 2
-                    """
-                    result[i, j, k] = resta_entre_pixel % 256 
+                    result[i, j] = resta_entre_pixel % 256 
                     
                 if modo=="promedio":
-                    result_promedio[i, j, k] = resta_entre_pixel
+                    result_promedio[i, j] = resta_entre_pixel
 
-    if modo == "promedio":
-        result = transformar(result_promedio)
+        if modo == "promedio":
+            result = transformar(result_promedio)
 
     return result
 
 if __name__ == "__main__":
-    image2 = cv2.imread("C:/Users/Hp245-User/Desktop/openCV/images/patos.png")
-    image1 = cv2.imread("C:/Users/Hp245-User/Desktop/openCV/images/lenacolor.png")
+    image2 = cv2.imread("C:/Users/Hp245-User/Desktop/openCV/images/patos.png",0)
+    image1 = cv2.imread("C:/Users/Hp245-User/Desktop/openCV/images/lenacolor.png",0)
 
     """
     truncar
