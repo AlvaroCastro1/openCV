@@ -511,7 +511,7 @@ QPushButton:hover {
         <property name="geometry">
          <rect>
           <x>240</x>
-          <y>120</y>
+          <y>115</y>
           <width>221</width>
           <height>221</height>
          </rect>
@@ -620,7 +620,7 @@ QPushButton:hover {
         <property name="geometry">
          <rect>
           <x>240</x>
-          <y>350</y>
+          <y>340</y>
           <width>221</width>
           <height>101</height>
          </rect>
@@ -668,6 +668,60 @@ QPushButton:hover {
          </property>
          <property name="text">
           <string>Mediana</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="conversiones">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>445</y>
+          <width>221</width>
+          <height>101</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox{
+	background-color: rgb(222, 223, 197);
+	color: rgb(0, 0, 0);
+}
+
+QPushButton{
+	background-color: rgb(200, 201, 181);
+	border-radius: 20px;
+}
+
+QPushButton:hover {
+	background-color: rgb(178, 179,159);
+}</string>
+        </property>
+        <property name="title">
+         <string>Conversion a Gris</string>
+        </property>
+        <widget class="QPushButton" name="btn_conv_formula">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>35</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Promedio</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_conv_promedio">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>65</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Formula</string>
          </property>
         </widget>
        </widget>

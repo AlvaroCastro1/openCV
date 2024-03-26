@@ -34,6 +34,7 @@ from Segmentacion.umbrales import umbral, umbral_invertido, umbral_porNivel, umb
 from filtros.media import filtro_media
 from filtros.mediana import filtro_mediana
 
+from conversiones.color2gray import convertir_a_gris_promedio, convertir_a_gris_formula
 
 class miApp(QMainWindow):
 
@@ -74,6 +75,9 @@ class miApp(QMainWindow):
 
         self.btn_filtro_media.clicked.connect(self.hacer_filtro_media)
         self.btn_filtro_mediana.clicked.connect(self.hacer_filtro_mediana)
+        
+        self.btn_conv_formula.clicked.connect(self.hacer_conv_formula)
+        self.btn_conv_promedio.clicked.connect(self.hacer_conv_promedio)
 
     def mostrar_imagen_y_actualizar(self, etiqueta, imagen):
         if imagen == 'imagen1':
@@ -487,6 +491,34 @@ class miApp(QMainWindow):
             cv2.imshow('Imagen Filtrada mediana', imagen_filtrada_personalizada)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
+
+    def hacer_conv_formula(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+        if (len(self.imagen1.shape)==3):
+            img = self.imagen1
+        else:
+            img = cv2.cvtColor(self.imagen1, cv2.COLOR_GRAY2RGB)
+
+        imagen_a_gris = convertir_a_gris_formula(img)
+        cv2.namedWindow('Imagen en grises', cv2.WINDOW_NORMAL)
+        cv2.imshow('Imagen en grises', imagen_a_gris)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+    def hacer_conv_promedio(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+        if (len(self.imagen1.shape)==3):
+            img = self.imagen1
+        else:
+            img = cv2.cvtColor(self.imagen1, cv2.COLOR_GRAY2RGB)
+
+        imagen_a_gris = convertir_a_gris_promedio(img)
+        cv2.namedWindow('Imagen en grises', cv2.WINDOW_NORMAL)
+        cv2.imshow('Imagen en grises', imagen_a_gris)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
