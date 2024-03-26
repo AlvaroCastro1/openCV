@@ -9,6 +9,7 @@ import cv2
 from operaciones_basicas.suma import sum_images
 from operaciones_basicas.resta import rest_images
 from operaciones_basicas.multi import multiplicar_imagen
+from operaciones_basicas.division import division_imagen
 
 class ModoDialog(QDialog):
     #clase para seleccionar modos
@@ -80,8 +81,8 @@ class miApp(QMainWindow):
         self.btn_mostrar_img2.clicked.connect(lambda: self.seleccionarYmostrar(self.lb_imagen2))
         self.btn_suma.clicked.connect(self.sumar)
         self.btn_resta.clicked.connect(self.restar)
-        self.btn_division.clicked.connect(self.multiplicar)
-        self.btn_multiplicacion.clicked.connect(self.dividir)
+        self.btn_multiplicacion.clicked.connect(self.multiplicar)
+        self.btn_division.clicked.connect(self.dividir)
 
     def sumar(self):
         if not self.validar_2_imagenes():
@@ -90,7 +91,13 @@ class miApp(QMainWindow):
         modo_dialog = ModoDialog()
         if modo_dialog.exec() == QDialog.DialogCode.Accepted:
             modo = modo_dialog.obtener_modo()
-            r = sum_images(self.imagen1, self.imagen2, modo)
+            if self.check_gris.isChecked():
+                img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY) if self.imagen1 is not None else None
+                img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY) if self.imagen2 is not None else None
+            else:
+                img1 = self.imagen1
+                img2 = self.imagen2
+            r = sum_images(img1, img2, modo)
             cv2.namedWindow("suma", cv2.WINDOW_NORMAL)
             cv2.imshow("suma",r)
             cv2.waitKey(0)
@@ -103,7 +110,13 @@ class miApp(QMainWindow):
         modo_dialog = ModoDialog()
         if modo_dialog.exec() == QDialog.DialogCode.Accepted:
             modo = modo_dialog.obtener_modo()
-            r = rest_images(self.imagen1, self.imagen2, modo)
+            if self.check_gris.isChecked():
+                img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+                img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY)
+            else:
+                img1 = self.imagen1
+                img2 = self.imagen2
+            r = rest_images(img1, img2, modo)
             cv2.namedWindow("resta", cv2.WINDOW_NORMAL)
             cv2.imshow("resta",r)
             cv2.waitKey(0)
@@ -121,7 +134,11 @@ class miApp(QMainWindow):
             if numero_dialog.exec() == QDialog.DialogCode.Accepted:
                 numero = numero_dialog.obtener_numero()
                 if numero is not None:
-                    r = multiplicar_imagen(self.imagen1, numero, modo)
+                    if self.check_gris.isChecked():
+                        img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+                    else:
+                        img1 = self.imagen1
+                    r = multiplicar_imagen(img1, numero, modo)
                     cv2.namedWindow("multiplicacion", cv2.WINDOW_NORMAL)
                     cv2.imshow("multiplicacion",r)
                     cv2.waitKey(0)
@@ -139,9 +156,13 @@ class miApp(QMainWindow):
             if numero_dialog.exec() == QDialog.DialogCode.Accepted:
                 numero = numero_dialog.obtener_numero()
                 if numero is not None:
-                    r = multiplicar_imagen(self.imagen1, numero, modo)
-                    cv2.namedWindow("multiplicacion", cv2.WINDOW_NORMAL)
-                    cv2.imshow("multiplicacion",r)
+                    if self.check_gris.isChecked():
+                        img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+                    else:
+                        img1 = self.imagen1
+                    r = division_imagen(img1, numero, modo)
+                    cv2.namedWindow("division", cv2.WINDOW_NORMAL)
+                    cv2.imshow("division",r)
                     cv2.waitKey(0)
                     cv2.destroyAllWindows()
 
@@ -158,14 +179,21 @@ class miApp(QMainWindow):
         return True
 
     def mostrar_imagen(self, ruta_imagen, etiqueta_mostrar):
-        self.imagen1 = cv2.imread(ruta_imagen) if etiqueta_mostrar == self.lb_imagen1 else self.imagen1
-        self.imagen2 = cv2.imread(ruta_imagen) if etiqueta_mostrar == self.lb_imagen2 else self.imagen2
-        
-        pixmap = QPixmap(ruta_imagen)
-        
-        # Asigna la imagen al QLabel
-        etiqueta_mostrar.setPixmap(pixmap)
-        etiqueta_mostrar.setScaledContents(True)
+        # Intenta cargar la imagen
+        imagen = cv2.imread(ruta_imagen)
+
+        if imagen is None:
+            QMessageBox.warning(self, "Error", "No se pudo cargar la imagen.")
+        else:
+            # Si la imagen se carga correctamente, asigna la imagen al QLabel
+            etiqueta_mostrar.setPixmap(QPixmap(ruta_imagen))
+            etiqueta_mostrar.setScaledContents(True)
+
+            # Asigna la imagen a la variable correspondiente (imagen1 o imagen2)
+            if etiqueta_mostrar == self.lb_imagen1:
+                self.imagen1 = imagen
+            elif etiqueta_mostrar == self.lb_imagen2:
+                self.imagen2 = imagen
 
     def seleccionarYmostrar(self, etiqueta):
         # Abre un cuadro de diálogo de archivo para seleccionar una imagen

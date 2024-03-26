@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>768</width>
-    <height>510</height>
+    <height>532</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,7 +50,7 @@
          <x>10</x>
          <y>10</y>
          <width>321</width>
-         <height>493</height>
+         <height>511</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -133,6 +133,19 @@
          <string>Seleccionar imagen 2</string>
         </property>
        </widget>
+       <widget class="QCheckBox" name="check_gris">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>480</y>
+          <width>281</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Resultado en escala de grises</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QFrame" name="resultado">
        <property name="geometry">
@@ -140,7 +153,7 @@
          <x>340</x>
          <y>10</y>
          <width>421</width>
-         <height>493</height>
+         <height>511</height>
         </rect>
        </property>
        <property name="styleSheet">
