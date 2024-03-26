@@ -31,9 +31,10 @@ def bilineal(imagen, x, y):
         return truncamiento(imagen, x, y)
 
 def interpolacion_imagen(imagen, modo, escala_x, escala_y):
-    if (escala_x, escala_y <= 0): 
+    if escala_x <= 0 or escala_y <= 0: 
         print("Error en las escalas")
         exit(0)
+
 
     if len(imagen.shape) == 3:
         canal1 = interpolacion_imagen(imagen[:,:,0], modo, escala_x, escala_y)
@@ -72,7 +73,7 @@ if __name__ == "__main__":
 
     print(imagen.shape)
 
-    img_escalada = interpolacion_imagen(imagen, 'bilineal', escala_x=-1, escala_y=1)
+    img_escalada = interpolacion_imagen(imagen, 'bilineal', escala_x=3, escala_y=3)
 
     print(img_escalada.shape)
     
