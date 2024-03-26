@@ -1,8 +1,7 @@
 import cv2
 import matplotlib.pyplot as plt
 
-def histograma_gris(ruta_imagen: str):
-    imagen = cv2.imread(ruta_imagen, cv2.IMREAD_GRAYSCALE)
+def histograma_gris(imagen: str):
 
     alto, ancho = imagen.shape
 

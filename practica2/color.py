@@ -1,8 +1,7 @@
 import cv2
 import matplotlib.pyplot as plt
 
-def visualizar_histograma_y_canales(imagen_path):
-    imagen = cv2.imread(imagen_path)
+def histograma_color(imagen):
 
     if imagen is None:
         print("Error: No se pudo cargar la imagen.")
@@ -74,7 +73,7 @@ def visualizar_histograma_y_canales(imagen_path):
 if __name__ == "__main__":
     image_path = "C:/Users/Hp245-User/Desktop/openCV/images/amarilla.png"
 
-    conteo_colores = visualizar_histograma_y_canales(image_path)
+    conteo_colores = histograma_color(image_path)
     nombres_canales = ['Canal Rojo', 'Canal Verde', 'Canal Azul']
     plt.figure(figsize=(8, 6))
 
