@@ -5,7 +5,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt6.uic import loadUi
 
-from cuadros_dialogo import DialogoDosNumeros, DialogoUnNumero, DialogoDosUmbrales
+from cuadros_dialogo import DialogoDosNumeros, DialogoUnNumero, DialogoDosUmbrales, DialogoTamanoKernel
 
 from utilidades import validar_2_imagenes, validar_1_imagen, seleccionarYmostrar
 
@@ -30,6 +30,9 @@ from practica2.grises import histograma_gris
 from practica2.color import histograma_color
 
 from Segmentacion.umbrales import umbral, umbral_invertido, umbral_porNivel, umbral_porNivel_invertido, umbral_por2puntos, umbral_por2puntos_invertido
+
+from filtros.media import filtro_media
+from filtros.mediana import filtro_mediana
 
 
 class miApp(QMainWindow):
@@ -69,6 +72,9 @@ class miApp(QMainWindow):
         self.btn_u_por2puntos.clicked.connect(self.hacer_u_por2puntos)
         self.btn_u_por2puntos_Invertido.clicked.connect(self.hacer_u_por2puntos_invertido)
 
+        self.btn_filtro_media.clicked.connect(self.hacer_filtro_media)
+        self.btn_filtro_mediana.clicked.connect(self.hacer_filtro_mediana)
+
     def mostrar_imagen_y_actualizar(self, etiqueta, imagen):
         if imagen == 'imagen1':
             self.imagen1 = seleccionarYmostrar(etiqueta, getattr(self, imagen))
@@ -83,8 +89,8 @@ class miApp(QMainWindow):
         if modo_dialog.exec() == QDialog.DialogCode.Accepted:
             modo = modo_dialog.obtener_modo()
             if self.check_gris.isChecked():
-                img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY) if self.imagen1 is not None else None
-                img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY) if self.imagen2 is not None else None
+                img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+                img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY)
             else:
                 img1 = self.imagen1
                 img2 = self.imagen2
@@ -176,8 +182,8 @@ class miApp(QMainWindow):
             return
 
         if self.check_gris.isChecked():
-            img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY) if self.imagen1 is not None else None
-            img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY) if self.imagen2 is not None else None
+            img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY)
         else:
             img1 = self.imagen1
             img2 = self.imagen2
@@ -192,8 +198,8 @@ class miApp(QMainWindow):
             return
 
         if self.check_gris.isChecked():
-            img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY) if self.imagen1 is not None else None
-            img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY) if self.imagen2 is not None else None
+            img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY)
         else:
             img1 = self.imagen1
             img2 = self.imagen2
@@ -208,8 +214,8 @@ class miApp(QMainWindow):
             return
 
         if self.check_gris.isChecked():
-            img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY) if self.imagen1 is not None else None
-            img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY) if self.imagen2 is not None else None
+            img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY)
         else:
             img1 = self.imagen1
             img2 = self.imagen2
@@ -444,6 +450,43 @@ class miApp(QMainWindow):
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
+    def hacer_filtro_media(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+        if self.check_gris.isChecked():
+            img = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+        else:
+            img = self.imagen1
+
+        dialogo = DialogoTamanoKernel()
+        
+        if dialogo.exec() == QDialog.DialogCode.Accepted:
+            tamano_kernel = int(dialogo.textbox.text())
+
+            imagen_filtrada_personalizada = filtro_media(img, tamano_kernel)
+            cv2.namedWindow('Imagen Filtrada media', cv2.WINDOW_NORMAL)
+            cv2.imshow('Imagen Filtrada media', imagen_filtrada_personalizada)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+    def hacer_filtro_mediana(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+        if self.check_gris.isChecked():
+            img = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+        else:
+            img = self.imagen1
+
+        dialogo = DialogoTamanoKernel()
+        
+        if dialogo.exec() == QDialog.DialogCode.Accepted:
+            tamano_kernel = int(dialogo.textbox.text())
+
+            imagen_filtrada_personalizada = filtro_mediana(img, tamano_kernel)
+            cv2.namedWindow('Imagen Filtrada mediana', cv2.WINDOW_NORMAL)
+            cv2.imshow('Imagen Filtrada mediana', imagen_filtrada_personalizada)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

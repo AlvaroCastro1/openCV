@@ -96,3 +96,35 @@ class DialogoDosUmbrales(QDialog):
                 print("Error: Los umbrales deben estar entre 0 y 255.")
         except ValueError:
             print("Error: Por favor, ingrese números enteros.")
+
+class DialogoTamanoKernel(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.setWindowTitle("Ingresar tamaño del kernel")
+        layout = QVBoxLayout()
+
+        self.label = QLabel("Tamaño del kernel (impar):")
+        self.textbox = QLineEdit()
+        layout.addWidget(self.label)
+        layout.addWidget(self.textbox)
+
+        self.boton_aceptar = QPushButton("Aceptar")
+        self.boton_aceptar.clicked.connect(self.aceptar)
+        layout.addWidget(self.boton_aceptar)
+
+        self.setLayout(layout)
+
+    def aceptar(self):
+        tamano_kernel = self.textbox.text()
+        try:
+            tamano_kernel = int(tamano_kernel)
+            if tamano_kernel % 2 == 0:  # Si es par, hacerlo impar
+                tamano_kernel += 1
+            if tamano_kernel > 0:
+                self.tamano_kernel = tamano_kernel
+                self.accept()  # Cerrar el diálogo con código de aceptación
+            else:
+                print("Error: El tamaño del kernel debe ser mayor que cero.")
+        except ValueError:
+            print("Error: Por favor, ingrese un número entero.")
