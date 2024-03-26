@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>768</width>
-    <height>532</height>
+    <width>769</width>
+    <height>599</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,7 +50,7 @@
          <x>10</x>
          <y>10</y>
          <width>321</width>
-         <height>511</height>
+         <height>581</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -66,7 +66,7 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>410</y>
+          <y>480</y>
           <width>280</width>
           <height>24</height>
          </rect>
@@ -84,7 +84,7 @@
           <x>20</x>
           <y>20</y>
           <width>280</width>
-          <height>180</height>
+          <height>200</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -101,9 +101,9 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>220</y>
+          <y>240</y>
           <width>280</width>
-          <height>180</height>
+          <height>200</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -121,7 +121,7 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>440</y>
+          <y>510</y>
           <width>280</width>
           <height>24</height>
          </rect>
@@ -136,8 +136,8 @@
        <widget class="QCheckBox" name="check_gris">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>480</y>
+          <x>10</x>
+          <y>550</y>
           <width>281</width>
           <height>20</height>
          </rect>
@@ -153,7 +153,7 @@
          <x>340</x>
          <y>10</y>
          <width>421</width>
-         <height>511</height>
+         <height>581</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -284,24 +284,23 @@ QPushButton:hover {
         </property>
         <property name="styleSheet">
          <string notr="true">QGroupBox{
-	background-color: rgb(217, 209, 194);
+	background-color: rgb(197, 223, 224);
 	color: rgb(0, 0, 0);
 }
 
 QPushButton{
-	background-color: rgb(187, 184, 175);
+	background-color: rgb(141, 174, 195);
 	border-radius: 20px;
 }
 
 QPushButton:hover {
-	color: rgb(255,255,255);
-	background-color: rgb(97, 105, 83);
+	background-color: rgb(41, 174, 195);
 }</string>
         </property>
         <property name="title">
-         <string>Operaciones Basicas</string>
+         <string>Operaciones Logicas</string>
         </property>
-        <widget class="QPushButton" name="btn_suma_3">
+        <widget class="QPushButton" name="btn_and">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -311,10 +310,10 @@ QPushButton:hover {
           </rect>
          </property>
          <property name="text">
-          <string>Suma</string>
+          <string>and</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="btn_resta_3">
+        <widget class="QPushButton" name="btn_or">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -324,10 +323,10 @@ QPushButton:hover {
           </rect>
          </property>
          <property name="text">
-          <string>Resta</string>
+          <string>or</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="btn_multiplicacion_3">
+        <widget class="QPushButton" name="btn_xor">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -340,10 +339,10 @@ QPushButton:hover {
           <string notr="true"/>
          </property>
          <property name="text">
-          <string>Multiplicacion</string>
+          <string>xor</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="btn_division_3">
+        <widget class="QPushButton" name="btn_not">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -353,92 +352,104 @@ QPushButton:hover {
           </rect>
          </property>
          <property name="text">
-          <string>Divisón</string>
+          <string>not</string>
          </property>
         </widget>
-        <widget class="QGroupBox" name="groupBox_3">
-         <property name="geometry">
-          <rect>
-           <x>200</x>
-           <y>160</y>
-           <width>221</width>
-           <height>161</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QGroupBox{
-	background-color: rgb(217, 209, 194);
+       </widget>
+       <widget class="QGroupBox" name="logicas_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>390</y>
+          <width>221</width>
+          <height>181</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox{
+	background-color: rgb(197, 223, 224);
 	color: rgb(0, 0, 0);
 }
 
 QPushButton{
-	background-color: rgb(187, 184, 175);
+	background-color: rgb(141, 174, 195);
 	border-radius: 20px;
 }
 
 QPushButton:hover {
-	color: rgb(255,255,255);
-	background-color: rgb(97, 105, 83);
+	background-color: rgb(41, 174, 195);
 }</string>
+        </property>
+        <property name="title">
+         <string>Operaciones Logicas</string>
+        </property>
+        <widget class="QPushButton" name="btn_and_2">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
          </property>
-         <property name="title">
-          <string>Operaciones Basicas</string>
+         <property name="text">
+          <string>Rotacion</string>
          </property>
-         <widget class="QPushButton" name="btn_suma_4">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>30</y>
-            <width>201</width>
-            <height>24</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Suma</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="btn_resta_4">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>60</y>
-            <width>201</width>
-            <height>24</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Resta</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="btn_multiplicacion_4">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>90</y>
-            <width>201</width>
-            <height>24</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>Multiplicacion</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="btn_division_4">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>120</y>
-            <width>201</width>
-            <height>24</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Divisón</string>
-          </property>
-         </widget>
+        </widget>
+        <widget class="QPushButton" name="btn_or_2">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Traslacion</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_xor_2">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>Escalado</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_not_2">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>120</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Inclinacion</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>150</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Espejo</string>
+         </property>
         </widget>
        </widget>
       </widget>

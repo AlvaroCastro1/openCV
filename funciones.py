@@ -18,6 +18,11 @@ from operaciones_basicas.multi import multiplicar_imagen
 from operaciones_basicas.division import division_imagen
 from operaciones_basicas.negativo import obtener_negativo
 
+from operaciones_logicas.op_and import operacion_and
+from operaciones_logicas.op_or import operacion_or
+from operaciones_logicas.op_xor import operacion_xor
+from operaciones_logicas.op_not import operacion_not
+
 class miApp(QMainWindow):
 
     def __init__(self):
@@ -37,8 +42,16 @@ class miApp(QMainWindow):
 
         self.btn_negativo.clicked.connect(self.negativo)
 
+        self.btn_and.clicked.connect(self.hacer_and)
+        self.btn_or.clicked.connect(self.hacer_or)
+        self.btn_xor.clicked.connect(self.hacer_xor)
+        self.btn_not.clicked.connect(self.hacer_not)
+
     def mostrar_imagen_y_actualizar(self, etiqueta, imagen):
-        self.imagen1 = seleccionarYmostrar(etiqueta, getattr(self, imagen))
+        if imagen == 'imagen1':
+            self.imagen1 = seleccionarYmostrar(etiqueta, getattr(self, imagen))
+        elif imagen == 'imagen2':
+            self.imagen2 = seleccionarYmostrar(etiqueta, getattr(self, imagen))
 
     def sumar(self):
         if not validar_2_imagenes(self.imagen1, self.imagen2):
@@ -133,6 +146,63 @@ class miApp(QMainWindow):
         r = obtener_negativo(img1)
         cv2.namedWindow("negtativo", cv2.WINDOW_NORMAL)
         cv2.imshow("negtativo",r)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+    def hacer_and(self):
+        if not validar_2_imagenes(self.imagen1, self.imagen2):
+            return
+
+        if self.check_gris.isChecked():
+            img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY) if self.imagen1 is not None else None
+            img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY) if self.imagen2 is not None else None
+        else:
+            img1 = self.imagen1
+            img2 = self.imagen2
+        r = operacion_and(img1, img2)
+        cv2.namedWindow("AND", cv2.WINDOW_NORMAL)
+        cv2.imshow("AND",r)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+    def hacer_or(self):
+        if not validar_2_imagenes(self.imagen1, self.imagen2):
+            return
+
+        if self.check_gris.isChecked():
+            img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY) if self.imagen1 is not None else None
+            img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY) if self.imagen2 is not None else None
+        else:
+            img1 = self.imagen1
+            img2 = self.imagen2
+        r = operacion_or(img1, img2)
+        cv2.namedWindow("OR", cv2.WINDOW_NORMAL)
+        cv2.imshow("OR",r)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+    def hacer_xor(self):
+        if not validar_2_imagenes(self.imagen1, self.imagen2):
+            return
+
+        if self.check_gris.isChecked():
+            img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY) if self.imagen1 is not None else None
+            img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY) if self.imagen2 is not None else None
+        else:
+            img1 = self.imagen1
+            img2 = self.imagen2
+        r = operacion_xor(img1, img2)
+        cv2.namedWindow("XOR", cv2.WINDOW_NORMAL)
+        cv2.imshow("XOR",r)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+    def hacer_not(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+        r = operacion_not(self.imagen1)
+        cv2.namedWindow("NOT", cv2.WINDOW_NORMAL)
+        cv2.imshow("NOT",r)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
