@@ -1,73 +1,23 @@
 import sys
+import cv2
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QVBoxLayout, QComboBox
-from PyQt6.QtWidgets import  QPushButton, QDialog, QLabel, QLineEdit
-from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt6.uic import loadUi
 
-import cv2
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import  QFileDialog, QMessageBox
+
+from utilidades import validar_2_imagenes, validar_1_imagen, mostrar_imagen, seleccionarYmostrar
+
+from numerodialog import NumeroDialog
+from mododialog import ModoDialog
+
 from operaciones_basicas.suma import sum_images
 from operaciones_basicas.resta import rest_images
 from operaciones_basicas.multi import multiplicar_imagen
 from operaciones_basicas.division import division_imagen
+from operaciones_basicas.negativo import obtener_negativo
 
-class ModoDialog(QDialog):
-    #clase para seleccionar modos
-    def __init__(self):
-        super().__init__()
-
-        layout = QVBoxLayout()
-
-        self.setWindowTitle("Seleccionar Modo")
-        self.setModal(True)
-
-        self.label = QLabel("Seleccione el modo de suma:")
-        layout.addWidget(self.label)
-
-        self.combo_box = QComboBox()
-        self.combo_box.addItem("truncar")
-        self.combo_box.addItem("ciclico")
-        self.combo_box.addItem("promedio")
-        layout.addWidget(self.combo_box)
-
-        self.btn_confirmar = QPushButton("Confirmar")
-        self.btn_confirmar.clicked.connect(self.accept)
-        layout.addWidget(self.btn_confirmar)
-
-        self.setLayout(layout)
-
-    def obtener_modo(self):
-        return self.combo_box.currentText()
-
-class NumeroDialog(QDialog):
-    # Clase para ingresar un número flotante
-    def __init__(self):
-        super().__init__()
-
-        layout = QVBoxLayout()
-
-        self.setWindowTitle("Ingresar Número")
-        self.setModal(True)
-
-        self.label = QLabel("Ingrese un número flotante:")
-        layout.addWidget(self.label)
-
-        self.float_edit = QLineEdit()
-        self.float_edit.setPlaceholderText("Ej. 3.14")
-        layout.addWidget(self.float_edit)
-
-        self.btn_confirmar = QPushButton("Confirmar")
-        self.btn_confirmar.clicked.connect(self.accept)
-        layout.addWidget(self.btn_confirmar)
-
-        self.setLayout(layout)
-
-    def obtener_numero(self):
-        try:
-            return float(self.float_edit.text())
-        except ValueError:
-            QMessageBox.warning(self, "Advertencia", "Por favor, ingrese un número flotante válido.")
-            return None
 class miApp(QMainWindow):
 
     def __init__(self):
@@ -77,15 +27,21 @@ class miApp(QMainWindow):
         self.imagen2=None
 
         # Conecta los botones al método con funciones lambda para pasar la etiqueta
-        self.btn_mostrar_img1.clicked.connect(lambda: self.seleccionarYmostrar(self.lb_imagen1))
-        self.btn_mostrar_img2.clicked.connect(lambda: self.seleccionarYmostrar(self.lb_imagen2))
+        self.btn_mostrar_img1.clicked.connect(lambda: self.mostrar_imagen_y_actualizar(self.lb_imagen1, 'imagen1'))
+        self.btn_mostrar_img2.clicked.connect(lambda: self.mostrar_imagen_y_actualizar(self.lb_imagen2, 'imagen2'))
+
         self.btn_suma.clicked.connect(self.sumar)
         self.btn_resta.clicked.connect(self.restar)
         self.btn_multiplicacion.clicked.connect(self.multiplicar)
         self.btn_division.clicked.connect(self.dividir)
 
+        self.btn_negativo.clicked.connect(self.negativo)
+
+    def mostrar_imagen_y_actualizar(self, etiqueta, imagen):
+        self.imagen1 = seleccionarYmostrar(etiqueta, getattr(self, imagen))
+
     def sumar(self):
-        if not self.validar_2_imagenes():
+        if not validar_2_imagenes(self.imagen1, self.imagen2):
             return
 
         modo_dialog = ModoDialog()
@@ -104,7 +60,7 @@ class miApp(QMainWindow):
             cv2.destroyAllWindows()
 
     def restar(self):
-        if not self.validar_2_imagenes():
+        if not validar_2_imagenes(self.imagen1, self.imagen2):
             return
 
         modo_dialog = ModoDialog()
@@ -123,7 +79,7 @@ class miApp(QMainWindow):
             cv2.destroyAllWindows()
 
     def multiplicar(self):
-        if not self.validar_1_imagen():
+        if not validar_1_imagen(self.imagen1):
             return
 
         modo_dialog = ModoDialog()
@@ -145,7 +101,7 @@ class miApp(QMainWindow):
                     cv2.destroyAllWindows()
 
     def dividir(self):
-        if not self.validar_1_imagen():
+        if not validar_1_imagen(self.imagen1):
             return
 
         modo_dialog = ModoDialog()
@@ -166,42 +122,19 @@ class miApp(QMainWindow):
                     cv2.waitKey(0)
                     cv2.destroyAllWindows()
 
-    def validar_2_imagenes(self):
-        if self.imagen1 is None or self.imagen2 is None:
-            QMessageBox.warning(self, "Advertencia", "Por favor, seleccione ambas imágenes antes de realizar la operación.")
-            return False
-        return True
+    def negativo(self):
+        if not validar_1_imagen(self.imagen1):
+            return
 
-    def validar_1_imagen(self):
-        if self.imagen1 is None:
-            QMessageBox.warning(self, "Advertencia", "Por favor, seleccione la imagen 1 antes de realizar la operación.")
-            return False
-        return True
-
-    def mostrar_imagen(self, ruta_imagen, etiqueta_mostrar):
-        # Intenta cargar la imagen
-        imagen = cv2.imread(ruta_imagen)
-
-        if imagen is None:
-            QMessageBox.warning(self, "Error", "No se pudo cargar la imagen.")
+        if self.check_gris.isChecked():
+            img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
         else:
-            # Si la imagen se carga correctamente, asigna la imagen al QLabel
-            etiqueta_mostrar.setPixmap(QPixmap(ruta_imagen))
-            etiqueta_mostrar.setScaledContents(True)
-
-            # Asigna la imagen a la variable correspondiente (imagen1 o imagen2)
-            if etiqueta_mostrar == self.lb_imagen1:
-                self.imagen1 = imagen
-            elif etiqueta_mostrar == self.lb_imagen2:
-                self.imagen2 = imagen
-
-    def seleccionarYmostrar(self, etiqueta):
-        # Abre un cuadro de diálogo de archivo para seleccionar una imagen
-        file_dialog = QFileDialog(self)
-        ruta_imagen, _ = file_dialog.getOpenFileName(self, "Seleccionar imagen", "", "Image Files (*.png *.jpg *.bmp *.gif)")
-
-        if ruta_imagen:  # Si el usuario seleccionó una imagen, muéstrala
-            self.mostrar_imagen(ruta_imagen, etiqueta)
+            img1 = self.imagen1
+        r = obtener_negativo(img1)
+        cv2.namedWindow("negtativo", cv2.WINDOW_NORMAL)
+        cv2.imshow("negtativo",r)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
