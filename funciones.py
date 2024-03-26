@@ -5,7 +5,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt6.uic import loadUi
 
-from cuadros_dialogo import DialogoDosNumeros, DialogoUnNumero, DialogoDosUmbrales, DialogoTamanoKernel
+from cuadros_dialogo import DialogoDosNumeros, DialogoUnNumero, DialogoDosUmbrales, DialogoTamanoKernel, DialogoNumeroSegmentaciones
 
 from utilidades import validar_2_imagenes, validar_1_imagen, seleccionarYmostrar
 
@@ -35,6 +35,8 @@ from filtros.media import filtro_media
 from filtros.mediana import filtro_mediana
 
 from conversiones.color2gray import convertir_a_gris_promedio, convertir_a_gris_formula
+
+from kmeans.kmeans import segmentar_con_kmeans
 
 class miApp(QMainWindow):
 
@@ -78,6 +80,8 @@ class miApp(QMainWindow):
         
         self.btn_conv_formula.clicked.connect(self.hacer_conv_formula)
         self.btn_conv_promedio.clicked.connect(self.hacer_conv_promedio)
+
+        self.btn_kmeans.clicked.connect(self.hacer_segm_kmeans)
 
     def mostrar_imagen_y_actualizar(self, etiqueta, imagen):
         if imagen == 'imagen1':
@@ -519,6 +523,25 @@ class miApp(QMainWindow):
         cv2.imshow('Imagen en grises', imagen_a_gris)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
+
+    def hacer_segm_kmeans(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+
+        if self.check_gris.isChecked():
+            img = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+        else:
+            img = self.imagen1
+
+        dialogo = DialogoNumeroSegmentaciones()
+        
+        if dialogo.exec() == QDialog.DialogCode.Accepted:
+            num_seg = int(dialogo.textbox.text())
+            imagen_segm = segmentar_con_kmeans(img, n_clusters=num_seg)
+            cv2.namedWindow('Imagen segmentada con Kmeans', cv2.WINDOW_NORMAL)
+            cv2.imshow('Imagen segmentada con Kmeans', imagen_segm)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

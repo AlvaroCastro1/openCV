@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>826</width>
-    <height>600</height>
+    <height>608</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,7 +50,7 @@
          <x>10</x>
          <y>10</y>
          <width>321</width>
-         <height>581</height>
+         <height>590</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -153,7 +153,7 @@
          <x>340</x>
          <y>10</y>
          <width>481</width>
-         <height>581</height>
+         <height>590</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -264,7 +264,7 @@ QPushButton:hover {
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>180</y>
+          <y>185</y>
           <width>221</width>
           <height>24</height>
          </rect>
@@ -362,7 +362,7 @@ QPushButton:hover {
           <x>10</x>
           <y>390</y>
           <width>221</width>
-          <height>181</height>
+          <height>191</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -708,7 +708,7 @@ QPushButton:hover {
           </rect>
          </property>
          <property name="text">
-          <string>Promedio</string>
+          <string>Formula</string>
          </property>
         </widget>
         <widget class="QPushButton" name="btn_conv_promedio">
@@ -721,9 +721,22 @@ QPushButton:hover {
           </rect>
          </property>
          <property name="text">
-          <string>Formula</string>
+          <string>Promedio</string>
          </property>
         </widget>
+       </widget>
+       <widget class="QPushButton" name="btn_kmeans">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>555</y>
+          <width>221</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>K-means</string>
+        </property>
        </widget>
       </widget>
      </widget>

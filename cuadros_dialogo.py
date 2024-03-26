@@ -128,3 +128,33 @@ class DialogoTamanoKernel(QDialog):
                 print("Error: El tamaño del kernel debe ser mayor que cero.")
         except ValueError:
             print("Error: Por favor, ingrese un número entero.")
+
+class DialogoNumeroSegmentaciones(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.setWindowTitle("Ingresar número de segmentaciones")
+        layout = QVBoxLayout()
+
+        self.label = QLabel("Número de segmentaciones:")
+        self.textbox = QLineEdit()
+        layout.addWidget(self.label)
+        layout.addWidget(self.textbox)
+
+        self.boton_aceptar = QPushButton("Aceptar")
+        self.boton_aceptar.clicked.connect(self.aceptar)
+        layout.addWidget(self.boton_aceptar)
+
+        self.setLayout(layout)
+
+    def aceptar(self):
+        num_segmentaciones = self.textbox.text()
+        try:
+            num_segmentaciones = int(num_segmentaciones)
+            if num_segmentaciones > 0:
+                self.num_segmentaciones = num_segmentaciones
+                self.accept()  # Cerrar el diálogo con código de aceptación
+            else:
+                print("Error: El número de segmentaciones debe ser mayor que cero.")
+        except ValueError:
+            print("Error: Por favor, ingrese un número entero.")
