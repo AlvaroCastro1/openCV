@@ -4,8 +4,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt6.uic import loadUi
 
-from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import  QFileDialog, QMessageBox
+from cuadros_dialogo import DialogoDosNumeros
 
 from utilidades import validar_2_imagenes, validar_1_imagen, mostrar_imagen, seleccionarYmostrar
 
@@ -22,6 +21,9 @@ from operaciones_logicas.op_and import operacion_and
 from operaciones_logicas.op_or import operacion_or
 from operaciones_logicas.op_xor import operacion_xor
 from operaciones_logicas.op_not import operacion_not
+
+from transformaciones.escalado import interpolacion_imagen
+from transformaciones.traslacion import traslacion
 
 class miApp(QMainWindow):
 
@@ -47,6 +49,9 @@ class miApp(QMainWindow):
         self.btn_xor.clicked.connect(self.hacer_xor)
         self.btn_not.clicked.connect(self.hacer_not)
 
+        self.btn_escalado.clicked.connect(self.hacer_escalado)
+        self.btn_traslacion.clicked.connect(self.hacer_traslacion)
+        
     def mostrar_imagen_y_actualizar(self, etiqueta, imagen):
         if imagen == 'imagen1':
             self.imagen1 = seleccionarYmostrar(etiqueta, getattr(self, imagen))
@@ -205,6 +210,43 @@ class miApp(QMainWindow):
         cv2.imshow("NOT",r)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
+
+    def hacer_escalado(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+
+        dialogo = DialogoDosNumeros(self)
+        if dialogo.exec() == QDialog.DialogCode.Accepted:
+            escala_x, escala_y = float(dialogo.textbox1.text()), float(dialogo.textbox2.text())
+
+            if self.check_gris.isChecked():
+                img = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            else:
+                img = self.imagen1
+
+            r = interpolacion_imagen(img, 'bilineal', escala_x=escala_x, escala_y=escala_y)
+            cv2.imshow("Escalado", r)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+    def hacer_traslacion(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+
+        dialogo = DialogoDosNumeros(self)
+        if dialogo.exec() == QDialog.DialogCode.Accepted:
+            traslacion_x, traslacion_y = float(dialogo.textbox1.text()), float(dialogo.textbox2.text())
+
+            if self.check_gris.isChecked():
+                img = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            else:
+                img = self.imagen1
+
+            r = traslacion(img, traslacion_x=traslacion_x, traslacion_y=traslacion_y)
+            cv2.namedWindow("Traslacion", cv2.WINDOW_NORMAL)
+            cv2.imshow("Traslacion", r)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
