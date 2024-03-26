@@ -147,7 +147,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QFrame" name="resultado">
+      <widget class="QFrame" name="opciones">
        <property name="geometry">
         <rect>
          <x>340</x>
@@ -452,35 +452,35 @@ QPushButton:hover {
          </property>
         </widget>
        </widget>
-       <widget class="QGroupBox" name="basicas_2">
+       <widget class="QGroupBox" name="histogramas">
         <property name="geometry">
          <rect>
           <x>240</x>
           <y>10</y>
           <width>221</width>
-          <height>161</height>
+          <height>101</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">QGroupBox{
-	background-color: rgb(217, 209, 194);
+	background-color: rgb(32, 198, 122);
 	color: rgb(0, 0, 0);
 }
 
 QPushButton{
-	background-color: rgb(187, 184, 175);
+	background-color: rgb(157, 192, 157);
 	border-radius: 20px;
 }
 
 QPushButton:hover {
 	color: rgb(255,255,255);
-	background-color: rgb(97, 105, 83);
+	background-color: rgb(63, 136, 128);
 }</string>
         </property>
         <property name="title">
-         <string>Operaciones Basicas</string>
+         <string>Histograma</string>
         </property>
-        <widget class="QPushButton" name="btn_suma_3">
+        <widget class="QPushButton" name="btn_hist_BN">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -490,10 +490,10 @@ QPushButton:hover {
           </rect>
          </property>
          <property name="text">
-          <string>Suma</string>
+          <string>BN</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="btn_resta_3">
+        <widget class="QPushButton" name="btn_hist_color">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -503,10 +503,64 @@ QPushButton:hover {
           </rect>
          </property>
          <property name="text">
-          <string>Resta</string>
+          <string>Color</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="btn_multiplicacion_3">
+       </widget>
+       <widget class="QGroupBox" name="Umbrales">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>120</y>
+          <width>221</width>
+          <height>221</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox{
+	background-color: rgb(131, 156, 181);
+	color: rgb(0, 0, 0);
+}
+
+QPushButton{
+	background-color: rgb(177, 225, 233);
+	border-radius: 20px;
+}
+
+QPushButton:hover {
+	background-color: rgb(110, 225, 233);
+}</string>
+        </property>
+        <property name="title">
+         <string>Umbrales</string>
+        </property>
+        <widget class="QPushButton" name="btn_umbral">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Umbral</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_umbral_Invertido">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Umbral Invertido</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_u_porNivel">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -519,10 +573,10 @@ QPushButton:hover {
           <string notr="true"/>
          </property>
          <property name="text">
-          <string>Multiplicacion</string>
+          <string>Umbral por nivel</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="btn_division_3">
+        <widget class="QPushButton" name="btn_u_porNivel_Invertido">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -532,7 +586,33 @@ QPushButton:hover {
           </rect>
          </property>
          <property name="text">
-          <string>Divisón</string>
+          <string>Umbral por nivel invertido</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_u_por2puntos">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>150</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Umbral por 2 puntos</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_u_por2puntos_Invertido">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>180</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Umbral por 2 puntos invertido</string>
          </property>
         </widget>
        </widget>

@@ -1,5 +1,6 @@
 import sys
 import cv2
+import matplotlib.pyplot as plt
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt6.uic import loadUi
@@ -24,6 +25,10 @@ from operaciones_logicas.op_not import operacion_not
 
 from transformaciones.escalado import interpolacion_imagen
 from transformaciones.traslacion import traslacion
+
+from practica2.grises import histograma_gris
+from practica2.color import histograma_color
+
 
 class miApp(QMainWindow):
 
@@ -51,6 +56,9 @@ class miApp(QMainWindow):
 
         self.btn_escalado.clicked.connect(self.hacer_escalado)
         self.btn_traslacion.clicked.connect(self.hacer_traslacion)
+
+        self.btn_hist_color.clicked.connect(self.histograma_a_color)
+        self.btn_hist_BN.clicked.connect(self.histograma_a_gris)
         
     def mostrar_imagen_y_actualizar(self, etiqueta, imagen):
         if imagen == 'imagen1':
@@ -247,6 +255,70 @@ class miApp(QMainWindow):
             cv2.imshow("Traslacion", r)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
+
+    def histograma_a_color(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+        # Convertir a color si la imagen es en escala de grises
+        if len(self.imagen1.shape) == 2:
+            imagen = cv2.cvtColor(self.imagen1, cv2.COLOR_GRAY2BGR)
+        else:
+            imagen = self.imagen1
+
+        conteo_colores = histograma_color(imagen)
+
+        # Crear una figura con dos subplots: uno para la imagen y otro para el histograma
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
+
+        ax1.imshow(cv2.cvtColor(self.imagen1, cv2.COLOR_BGR2RGB))
+        ax1.set_title('Imagen')
+        ax1.axis('off')
+
+        # Trazar el histograma en el segundo subplot
+        ax2.plot(list(conteo_colores['R'].keys()), list(conteo_colores['R'].values()), color='red', label="rojo")
+        ax2.plot(list(conteo_colores['G'].keys()), list(conteo_colores['G'].values()), color='green', label="verde")
+        ax2.plot(list(conteo_colores['B'].keys()), list(conteo_colores['B'].values()), color='blue', label="azul")
+        ax2.set_title('Histograma de la imagen')
+        ax2.set_xlabel('Valor de intensidad')
+        ax2.set_ylabel('Frecuencia')
+        ax2.legend()
+        ax2.grid(True)
+
+        plt.show()
+
+    def histograma_a_gris(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+
+        # Convertir a escala de grises si la imagen es a color
+        if len(self.imagen1.shape) == 3:
+            imagen = cv2.cvtColor(self.imagen1, cv2.COLOR_BGR2GRAY)
+        else:
+            imagen = self.imagen1
+
+        conteo_colores = histograma_gris(imagen)
+
+        # Crear una figura con dos subplots: uno para la imagen y otro para el histograma
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+
+        # Mostrar la imagen en el primer subplot
+        ax1.imshow(imagen, cmap='gray')
+        ax1.set_title('Imagen en escala de grises')
+        ax1.axis('off')
+
+        # Trazar el histograma en el segundo subplot
+        ax2.bar(conteo_colores.keys(), conteo_colores.values(), color='gray')
+        ax2.set_title('Histograma en escala de grises')
+        ax2.set_xlabel('Valor de intensidad')
+        ax2.set_ylabel('Frecuencia')
+
+        # Ajustar automáticamente el tamaño de la ventana
+        plt.gcf().set_size_inches(12, 6)
+
+        # Mostrar los subplots
+        plt.tight_layout()
+        plt.show()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
