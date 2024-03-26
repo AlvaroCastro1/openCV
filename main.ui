@@ -616,6 +616,61 @@ QPushButton:hover {
          </property>
         </widget>
        </widget>
+       <widget class="QGroupBox" name="filtros">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>350</y>
+          <width>221</width>
+          <height>101</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox{
+	background-color: rgb(238, 174, 170);
+	color: rgb(0, 0, 0);
+}
+
+QPushButton{
+	background-color: rgb(218, 174, 170);
+	border-radius: 20px;
+}
+
+QPushButton:hover {
+	color: rgb(255,255,255);
+	background-color: rgb(178, 174, 170);
+}</string>
+        </property>
+        <property name="title">
+         <string>Filtros</string>
+        </property>
+        <widget class="QPushButton" name="btn_filtro_media">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Media</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_filtro_mediana">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Mediana</string>
+         </property>
+        </widget>
+       </widget>
       </widget>
      </widget>
     </item>

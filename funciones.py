@@ -5,9 +5,9 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt6.uic import loadUi
 
-from cuadros_dialogo import DialogoDosNumeros
+from cuadros_dialogo import DialogoDosNumeros, DialogoUnNumero, DialogoDosUmbrales
 
-from utilidades import validar_2_imagenes, validar_1_imagen, mostrar_imagen, seleccionarYmostrar
+from utilidades import validar_2_imagenes, validar_1_imagen, seleccionarYmostrar
 
 from numerodialog import NumeroDialog
 from mododialog import ModoDialog
@@ -28,6 +28,8 @@ from transformaciones.traslacion import traslacion
 
 from practica2.grises import histograma_gris
 from practica2.color import histograma_color
+
+from Segmentacion.umbrales import umbral, umbral_invertido, umbral_porNivel, umbral_porNivel_invertido, umbral_por2puntos, umbral_por2puntos_invertido
 
 
 class miApp(QMainWindow):
@@ -59,7 +61,14 @@ class miApp(QMainWindow):
 
         self.btn_hist_color.clicked.connect(self.histograma_a_color)
         self.btn_hist_BN.clicked.connect(self.histograma_a_gris)
-        
+
+        self.btn_umbral.clicked.connect(self.hacer_umbral)
+        self.btn_umbral_Invertido.clicked.connect(self.hacer_umbral_Invertido)
+        self.btn_u_porNivel.clicked.connect(self.hacer_u_porNivel)
+        self.btn_u_porNivel_Invertido.clicked.connect(self.hacer_u_porNivel_Invertido)
+        self.btn_u_por2puntos.clicked.connect(self.hacer_u_por2puntos)
+        self.btn_u_por2puntos_Invertido.clicked.connect(self.hacer_u_por2puntos_invertido)
+
     def mostrar_imagen_y_actualizar(self, etiqueta, imagen):
         if imagen == 'imagen1':
             self.imagen1 = seleccionarYmostrar(etiqueta, getattr(self, imagen))
@@ -318,6 +327,122 @@ class miApp(QMainWindow):
         # Mostrar los subplots
         plt.tight_layout()
         plt.show()
+
+    def hacer_umbral(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+
+        dialogo = DialogoUnNumero()
+        
+        if dialogo.exec() == QDialog.DialogCode.Accepted:
+            # Obtener el número ingresado del cuadro de diálogo
+            numero = int(dialogo.textbox.text())
+            if len(self.imagen1.shape) == 3:
+                img = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            else:
+                img = self.imagen1
+            umb_img = umbral(img, numero)
+            cv2.namedWindow("umbral", cv2.WINDOW_NORMAL)
+            cv2.imshow("umbral", umb_img)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+    def hacer_umbral_Invertido(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+
+        dialogo = DialogoUnNumero()
+        
+        if dialogo.exec() == QDialog.DialogCode.Accepted:
+            # Obtener el número ingresado del cuadro de diálogo
+            numero = int(dialogo.textbox.text())
+            if len(self.imagen1.shape) == 3:
+                img = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            else:
+                img = self.imagen1
+            umb_img = umbral_invertido(img, numero)
+            cv2.namedWindow("umbral Invertido", cv2.WINDOW_NORMAL)
+            cv2.imshow("umbral Invertido", umb_img)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+    def hacer_u_porNivel(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+
+        dialogo = DialogoUnNumero()
+        
+        if dialogo.exec() == QDialog.DialogCode.Accepted:
+            # Obtener el número ingresado del cuadro de diálogo
+            numero = int(dialogo.textbox.text())
+            if len(self.imagen1.shape) == 3:
+                img = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            else:
+                img = self.imagen1
+            umb_img = umbral_porNivel(img, numero)
+            cv2.namedWindow("umbral por Nivel", cv2.WINDOW_NORMAL)
+            cv2.imshow("umbral por Nivel", umb_img)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+    def hacer_u_porNivel_Invertido(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+
+        dialogo = DialogoUnNumero()
+        
+        if dialogo.exec() == QDialog.DialogCode.Accepted:
+            # Obtener el número ingresado del cuadro de diálogo
+            numero = int(dialogo.textbox.text())
+            if len(self.imagen1.shape) == 3:
+                img = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            else:
+                img = self.imagen1
+            umb_img = umbral_porNivel_invertido(img, numero)
+            cv2.namedWindow("umbral por Nivel", cv2.WINDOW_NORMAL)
+            cv2.imshow("umbral por Nivel", umb_img)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+    def hacer_u_por2puntos(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+
+        dialogo = DialogoDosUmbrales()
+        
+        if dialogo.exec() == QDialog.DialogCode.Accepted:
+            # Obtener el número ingresado del cuadro de diálogo
+            umbral1 = int(dialogo.textbox1.text())
+            umbral2 = int(dialogo.textbox2.text())
+            if len(self.imagen1.shape) == 3:
+                img = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            else:
+                img = self.imagen1
+            umb_img = umbral_por2puntos(img, umbral1, umbral2)
+            cv2.namedWindow("umbral por 2 puntos", cv2.WINDOW_NORMAL)
+            cv2.imshow("umbral por 2 puntos", umb_img)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+    def hacer_u_por2puntos_invertido(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+
+        dialogo = DialogoDosUmbrales()
+        
+        if dialogo.exec() == QDialog.DialogCode.Accepted:
+            # Obtener el número ingresado del cuadro de diálogo
+            umbral1 = int(dialogo.textbox1.text())
+            umbral2 = int(dialogo.textbox2.text())
+            if len(self.imagen1.shape) == 3:
+                img = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            else:
+                img = self.imagen1
+            umb_img = umbral_por2puntos_invertido(img, umbral1, umbral2)
+            cv2.namedWindow("umbral por 2 puntos invertido", cv2.WINDOW_NORMAL)
+            cv2.imshow("umbral por 2 puntos invertido", umb_img)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":

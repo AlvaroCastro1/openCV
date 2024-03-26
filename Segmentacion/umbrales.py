@@ -51,7 +51,7 @@ def umbral_por2puntos(imagen, umbral_valor1, umbral_valor2):
     salida = np.zeros_like(imagen)
     for i in range(alto):
         for j in range(ancho):
-            if imagen[i, j] <= umbral_valor1 and imagen[i, j] >= umbral_valor2:
+            if imagen[i, j] >= umbral_valor1 and imagen[i, j] <= umbral_valor2:
                 salida[i, j] = 0
             else:
                 salida[i, j] = imagen[i,j]
@@ -62,7 +62,7 @@ def umbral_por2puntos_invertido(imagen, umbral_valor1, umbral_valor2):
     salida = np.zeros_like(imagen)
     for i in range(alto):
         for j in range(ancho):
-            if imagen[i, j] <= umbral_valor1 and imagen[i, j] >= umbral_valor2:
+            if imagen[i, j] >= umbral_valor1 and imagen[i, j] <= umbral_valor2:
                 salida[i, j] = imagen[i,j]
             else:
                 salida[i, j] = 0
