@@ -1,9 +1,15 @@
+import os
 import sys
 import cv2
-import matplotlib.pyplot as plt
+import numpy as np
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt6.uic import loadUi
+import tkinter as tk
+from tkinter import simpledialog
+from tkinter import Scale, Button
+from PIL import Image, ImageTk
+import matplotlib.pyplot as plt
 
 from cuadros_dialogo import DialogoDosNumeros, DialogoUnNumero, DialogoDosUmbrales, DialogoTamanoKernel, DialogoNumeroSegmentaciones
 
@@ -25,6 +31,16 @@ from operaciones_logicas.op_not import operacion_not
 
 from transformaciones.escalado import interpolacion_imagen
 from transformaciones.traslacion import traslacion
+from transformaciones.contraste import contraste_operacion, ope_contraste_bw
+from transformaciones.incli import obtener_angulo, inclinar_vertical, inclinar_horizontal
+from transformaciones.rotacion import Rotacion_imagenes
+from transformaciones.espejo import ImageManipulator
+from transformaciones.espejonegro import Espejo_transformar
+
+from bordes.canny import suavizar_imagen, calcular_gradientes, suprimir_no_maximos,umbralizar
+from bordes.sobel import convolucion_sobel, detectar_bordes_sobel, plot_images
+from bordes.prewitt import convolucion
+from bordes.gradiente import detectar_bordes
 
 from practica2.grises import histograma_gris
 from practica2.color import histograma_color
@@ -37,6 +53,8 @@ from filtros.mediana import filtro_mediana
 from conversiones.color2gray import convertir_a_gris_promedio, convertir_a_gris_formula
 
 from kmeans.kmeans import segmentar_con_kmeans
+
+from guardar import guardar_imagen_ruta
 
 class miApp(QMainWindow):
 
@@ -83,6 +101,19 @@ class miApp(QMainWindow):
 
         self.btn_kmeans.clicked.connect(self.hacer_segm_kmeans)
 
+        self.btn_contraste.clicked.connect(self.aplicar_contraste)
+        self.btn_inclinacion_vertical.clicked.connect(self.aplicar_inclinacion_vertical)
+        self.btn_inclinacion_hori.clicked.connect(self.aplicar_inclinacion)
+        self.btn_rotacion.clicked.connect(self.aplicar_rotacion)
+        self.btn_espejo.clicked.connect(self.aplicar_espejo)
+
+        self.btn_borde_canny.clicked.connect(self.aplicar_canny)
+        self.btn_borde_sobel.clicked.connect(self.aplicar_sobel)
+        self.btn_borde_prewitt.clicked.connect(self.aplicar_prewitt)
+        self.btn_borde_gradiente.clicked.connect(self.aplicar_gradiente)
+
+      
+#-------------------------------------FUNCIONES DE LAS DIFERENTES OPERACIONES-------------------------------------------------------------
     def mostrar_imagen_y_actualizar(self, etiqueta, imagen):
         if imagen == 'imagen1':
             self.imagen1 = seleccionarYmostrar(etiqueta, getattr(self, imagen))
@@ -105,8 +136,11 @@ class miApp(QMainWindow):
             r = sum_images(img1, img2, modo)
             cv2.namedWindow("suma", cv2.WINDOW_NORMAL)
             cv2.imshow("suma",r)
-            cv2.waitKey(0)
+            key = cv2.waitKey(0)  
             cv2.destroyAllWindows()
+            
+            if key == ord('s'):
+                guardar_imagen_ruta(r)
 
     def restar(self):
         if not validar_2_imagenes(self.imagen1, self.imagen2):
@@ -124,8 +158,11 @@ class miApp(QMainWindow):
             r = rest_images(img1, img2, modo)
             cv2.namedWindow("resta", cv2.WINDOW_NORMAL)
             cv2.imshow("resta",r)
-            cv2.waitKey(0)
+            key = cv2.waitKey(0)  
             cv2.destroyAllWindows()
+            
+            if key == ord('s'):
+                guardar_imagen_ruta(r)
 
     def multiplicar(self):
         if not validar_1_imagen(self.imagen1):
@@ -146,8 +183,11 @@ class miApp(QMainWindow):
                     r = multiplicar_imagen(img1, numero, modo)
                     cv2.namedWindow("multiplicacion", cv2.WINDOW_NORMAL)
                     cv2.imshow("multiplicacion",r)
-                    cv2.waitKey(0)
+                    key = cv2.waitKey(0)  
                     cv2.destroyAllWindows()
+                    
+                    if key == ord('s'):
+                        guardar_imagen_ruta(r)
 
     def dividir(self):
         if not validar_1_imagen(self.imagen1):
@@ -168,23 +208,28 @@ class miApp(QMainWindow):
                     r = division_imagen(img1, numero, modo)
                     cv2.namedWindow("division", cv2.WINDOW_NORMAL)
                     cv2.imshow("division",r)
-                    cv2.waitKey(0)
+                    key = cv2.waitKey(0)  
                     cv2.destroyAllWindows()
+                    
+                    if key == ord('s'):
+                        guardar_imagen_ruta(r)
 
     def negativo(self):
         if not validar_1_imagen(self.imagen1):
             return
-
         if self.check_gris.isChecked():
             img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+          
         else:
             img1 = self.imagen1
         r = obtener_negativo(img1)
-        cv2.namedWindow("negtativo", cv2.WINDOW_NORMAL)
-        cv2.imshow("negtativo",r)
-        cv2.waitKey(0)
+        cv2.namedWindow("Negativo", cv2.WINDOW_NORMAL)
+        cv2.imshow("Negativo",r)
+        key = cv2.waitKey(0)  
         cv2.destroyAllWindows()
-
+        if key == ord('s'):
+            guardar_imagen_ruta(r)
+    
     def hacer_and(self):
         if not validar_2_imagenes(self.imagen1, self.imagen2):
             return
@@ -192,14 +237,17 @@ class miApp(QMainWindow):
         if self.check_gris.isChecked():
             img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
             img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY)
+            
         else:
             img1 = self.imagen1
             img2 = self.imagen2
         r = operacion_and(img1, img2)
         cv2.namedWindow("AND", cv2.WINDOW_NORMAL)
         cv2.imshow("AND",r)
-        cv2.waitKey(0)
+        key = cv2.waitKey(0)  
         cv2.destroyAllWindows()
+        if key == ord('s'):
+            guardar_imagen_ruta(r)
 
     def hacer_or(self):
         if not validar_2_imagenes(self.imagen1, self.imagen2):
@@ -214,8 +262,10 @@ class miApp(QMainWindow):
         r = operacion_or(img1, img2)
         cv2.namedWindow("OR", cv2.WINDOW_NORMAL)
         cv2.imshow("OR",r)
-        cv2.waitKey(0)
+        key = cv2.waitKey(0)  
         cv2.destroyAllWindows()
+        if key == ord('s'):
+            guardar_imagen_ruta(r)
 
     def hacer_xor(self):
         if not validar_2_imagenes(self.imagen1, self.imagen2):
@@ -230,8 +280,10 @@ class miApp(QMainWindow):
         r = operacion_xor(img1, img2)
         cv2.namedWindow("XOR", cv2.WINDOW_NORMAL)
         cv2.imshow("XOR",r)
-        cv2.waitKey(0)
+        key = cv2.waitKey(0)  
         cv2.destroyAllWindows()
+        if key == ord('s'):
+            guardar_imagen_ruta(r)
 
     def hacer_not(self):
         if not validar_1_imagen(self.imagen1):
@@ -239,8 +291,10 @@ class miApp(QMainWindow):
         r = operacion_not(self.imagen1)
         cv2.namedWindow("NOT", cv2.WINDOW_NORMAL)
         cv2.imshow("NOT",r)
-        cv2.waitKey(0)
+        key = cv2.waitKey(0)  
         cv2.destroyAllWindows()
+        if key == ord('s'):
+            guardar_imagen_ruta(r)
 
     def hacer_escalado(self):
         if not validar_1_imagen(self.imagen1):
@@ -257,8 +311,10 @@ class miApp(QMainWindow):
 
             r = interpolacion_imagen(img, 'bilineal', escala_x=escala_x, escala_y=escala_y)
             cv2.imshow("Escalado", r)
-            cv2.waitKey(0)
+            key = cv2.waitKey(0)  
             cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(r)
 
     def hacer_traslacion(self):
         if not validar_1_imagen(self.imagen1):
@@ -276,8 +332,10 @@ class miApp(QMainWindow):
             r = traslacion(img, traslacion_x=traslacion_x, traslacion_y=traslacion_y)
             cv2.namedWindow("Traslacion", cv2.WINDOW_NORMAL)
             cv2.imshow("Traslacion", r)
-            cv2.waitKey(0)
+            key = cv2.waitKey(0)  
             cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(r)
 
     def histograma_a_color(self):
         if not validar_1_imagen(self.imagen1):
@@ -358,8 +416,10 @@ class miApp(QMainWindow):
             umb_img = umbral(img, numero)
             cv2.namedWindow("umbral", cv2.WINDOW_NORMAL)
             cv2.imshow("umbral", umb_img)
-            cv2.waitKey(0)
+            key = cv2.waitKey(0)  
             cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(umb_img)
 
     def hacer_umbral_Invertido(self):
         if not validar_1_imagen(self.imagen1):
@@ -377,8 +437,10 @@ class miApp(QMainWindow):
             umb_img = umbral_invertido(img, numero)
             cv2.namedWindow("umbral Invertido", cv2.WINDOW_NORMAL)
             cv2.imshow("umbral Invertido", umb_img)
-            cv2.waitKey(0)
+            key = cv2.waitKey(0)  
             cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(umb_img)
 
     def hacer_u_porNivel(self):
         if not validar_1_imagen(self.imagen1):
@@ -396,8 +458,10 @@ class miApp(QMainWindow):
             umb_img = umbral_porNivel(img, numero)
             cv2.namedWindow("umbral por Nivel", cv2.WINDOW_NORMAL)
             cv2.imshow("umbral por Nivel", umb_img)
-            cv2.waitKey(0)
+            key = cv2.waitKey(0)  
             cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(umb_img)
 
     def hacer_u_porNivel_Invertido(self):
         if not validar_1_imagen(self.imagen1):
@@ -415,8 +479,10 @@ class miApp(QMainWindow):
             umb_img = umbral_porNivel_invertido(img, numero)
             cv2.namedWindow("umbral por Nivel", cv2.WINDOW_NORMAL)
             cv2.imshow("umbral por Nivel", umb_img)
-            cv2.waitKey(0)
+            key = cv2.waitKey(0)  
             cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(umb_img)
 
     def hacer_u_por2puntos(self):
         if not validar_1_imagen(self.imagen1):
@@ -435,8 +501,10 @@ class miApp(QMainWindow):
             umb_img = umbral_por2puntos(img, umbral1, umbral2)
             cv2.namedWindow("umbral por 2 puntos", cv2.WINDOW_NORMAL)
             cv2.imshow("umbral por 2 puntos", umb_img)
-            cv2.waitKey(0)
+            key = cv2.waitKey(0)  
             cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(umb_img)
 
     def hacer_u_por2puntos_invertido(self):
         if not validar_1_imagen(self.imagen1):
@@ -455,8 +523,10 @@ class miApp(QMainWindow):
             umb_img = umbral_por2puntos_invertido(img, umbral1, umbral2)
             cv2.namedWindow("umbral por 2 puntos invertido", cv2.WINDOW_NORMAL)
             cv2.imshow("umbral por 2 puntos invertido", umb_img)
-            cv2.waitKey(0)
+            key = cv2.waitKey(0)  
             cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(umb_img)
 
     def hacer_filtro_media(self):
         if not validar_1_imagen(self.imagen1):
@@ -474,8 +544,10 @@ class miApp(QMainWindow):
             imagen_filtrada_personalizada = filtro_media(img, tamano_kernel)
             cv2.namedWindow('Imagen Filtrada media', cv2.WINDOW_NORMAL)
             cv2.imshow('Imagen Filtrada media', imagen_filtrada_personalizada)
-            cv2.waitKey(0)
+            key = cv2.waitKey(0)  
             cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(imagen_filtrada_personalizada)
 
     def hacer_filtro_mediana(self):
         if not validar_1_imagen(self.imagen1):
@@ -493,8 +565,10 @@ class miApp(QMainWindow):
             imagen_filtrada_personalizada = filtro_mediana(img, tamano_kernel)
             cv2.namedWindow('Imagen Filtrada mediana', cv2.WINDOW_NORMAL)
             cv2.imshow('Imagen Filtrada mediana', imagen_filtrada_personalizada)
-            cv2.waitKey(0)
+            key = cv2.waitKey(0)  
             cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(imagen_filtrada_personalizada)
 
     def hacer_conv_formula(self):
         if not validar_1_imagen(self.imagen1):
@@ -507,8 +581,10 @@ class miApp(QMainWindow):
         imagen_a_gris = convertir_a_gris_formula(img)
         cv2.namedWindow('Imagen en grises', cv2.WINDOW_NORMAL)
         cv2.imshow('Imagen en grises', imagen_a_gris)
-        cv2.waitKey(0)
+        key = cv2.waitKey(0)  
         cv2.destroyAllWindows()
+        if key == ord('s'):
+            guardar_imagen_ruta(imagen_a_gris)
 
     def hacer_conv_promedio(self):
         if not validar_1_imagen(self.imagen1):
@@ -521,8 +597,10 @@ class miApp(QMainWindow):
         imagen_a_gris = convertir_a_gris_promedio(img)
         cv2.namedWindow('Imagen en grises', cv2.WINDOW_NORMAL)
         cv2.imshow('Imagen en grises', imagen_a_gris)
-        cv2.waitKey(0)
+        key = cv2.waitKey(0)  
         cv2.destroyAllWindows()
+        if key == ord('s'):
+            guardar_imagen_ruta(imagen_a_gris)
 
     def hacer_segm_kmeans(self):
         if not validar_1_imagen(self.imagen1):
@@ -540,9 +618,239 @@ class miApp(QMainWindow):
             imagen_segm = segmentar_con_kmeans(img, n_clusters=num_seg)
             cv2.namedWindow('Imagen segmentada con Kmeans', cv2.WINDOW_NORMAL)
             cv2.imshow('Imagen segmentada con Kmeans', imagen_segm)
-            cv2.waitKey(0)
+            key = cv2.waitKey(0)  
             cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(imagen_segm)
+#------------------------------------------------------------
+    def aplicar_contraste(self):
+        if self.check_gris.isChecked():
+            img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            factor_contraste = simpledialog.askfloat("Contraste", "Ingresa el valor del factor de contraste entre -100 y 100:")
+            imagen_con_contraste = ope_contraste_bw(img1, factor_contraste)
+            plt.figure(figsize=(10,5))
+            plt.subplot(1, 2, 1)
+            plt.title('Original a Grises')
+            plt.imshow(img1, cmap='gray')
+            plt.axis('off')
+            plt.subplot(1, 2, 2)
+            plt.title('Contraste aplicado')
+            plt.imshow(imagen_con_contraste, cmap='gray') 
+            plt.axis('off')
+            plt.show()
 
+        else:
+            img1 = self.imagen1
+            factor_contraste = simpledialog.askfloat("Contraste", "Ingresa el valor del factor de contraste entre -100 y 100:")
+            imagen_con_contraste = contraste_operacion(img1, factor_contraste)
+            plt.figure(figsize=(10,5))
+            plt.subplot(1, 2, 1)
+            plt.title('Original')
+            plt.imshow(cv2.cvtColor(img1, cv2.COLOR_BGR2RGB))  
+            plt.axis('off')
+            plt.subplot(1, 2, 2)
+            plt.title('Contraste aplicado')
+            plt.imshow(cv2.cvtColor(imagen_con_contraste, cv2.COLOR_BGR2RGB)) 
+            plt.axis('off')
+            plt.show()
+            
+    def aplicar_inclinacion(self):
+        if self.check_gris.isChecked():
+            img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            angulo = obtener_angulo()
+            inclinada_horizontal = inclinar_horizontal(img1, angulo)
+            
+            cv2.imshow("Inclinada Horizontalmente", inclinada_horizontal)
+            key = cv2.waitKey(0)  
+            cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(inclinada_horizontal)
+           
+        else:
+            img1 = self.imagen1
+            angulo = obtener_angulo()
+            inclinada_horizontal = inclinar_horizontal(img1, angulo)
+            
+            cv2.imshow("Inclinada Horizontalmente", inclinada_horizontal)
+            key = cv2.waitKey(0)  
+            cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(inclinada_horizontal)
+            
+    def aplicar_inclinacion_vertical(self):
+        if self.check_gris.isChecked():
+            img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            angulo = obtener_angulo()
+
+            inclinada_vertical = inclinar_vertical(img1, angulo)
+            cv2.imshow("Inclinada Verticalmente", inclinada_vertical)
+            
+            key = cv2.waitKey(0)  
+            cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(inclinada_vertical) 
+               
+        else:
+            img1 = self.imagen1
+            angulo = obtener_angulo()
+
+            inclinada_vertical = inclinar_vertical(img1, angulo)
+            cv2.imshow("Inclinada Verticalmente", inclinada_vertical)
+            
+            key = cv2.waitKey(0)  
+            cv2.destroyAllWindows()
+            if key == ord('s'):
+                guardar_imagen_ruta(inclinada_vertical) 
+                
+
+    def aplicar_rotacion(self):
+        if self.check_gris.isChecked():
+            rotacion_instancia = Rotacion_imagenes()
+            rotacion_instancia.original_image = cv2.cvtColor(self.imagen1,cv2.COLOR_BGR2GRAY)
+
+            root = tk.Tk()
+            root.title("Rotación de Imagen")
+
+            rotacion_instancia.angulo_scale = Scale(root, from_=0, to=360, orient="horizontal", label="Ángulo de Rotación", length=300)
+            rotacion_instancia.angulo_scale.pack()
+
+            rotacion_instancia.angulo_scale.bind("<ButtonRelease-1>", rotacion_instancia.actualizar_rotacion)
+
+            rotacion_instancia.rotacion_resultado = tk.Label(root)
+            rotacion_instancia.rotacion_resultado.pack()
+            guardar_button = tk.Button(root, text="Guardar Imagen", command=rotacion_instancia.guardar_imagen)
+            guardar_button.pack()
+
+            original_photo = ImageTk.PhotoImage(Image.fromarray(rotacion_instancia.original_image))
+            original_label = tk.Label(root, image=original_photo)
+            original_label.pack()
+            root.mainloop()
+
+        else:
+            rotacion_instancia = Rotacion_imagenes()
+            rotacion_instancia.original_image = cv2.cvtColor(self.imagen1, cv2.COLOR_BGR2RGB)
+            
+            root = tk.Tk()
+            root.title("Rotación de Imagen")
+
+            rotacion_instancia.angulo_scale = Scale(root, from_=0, to=360, orient="horizontal", label="Ángulo de Rotación", length=300)
+            rotacion_instancia.angulo_scale.pack()
+            rotacion_instancia.angulo_scale.bind("<ButtonRelease-1>", rotacion_instancia.actualizar_rotacion)
+
+            rotacion_instancia.rotacion_resultado = tk.Label(root)
+            rotacion_instancia.rotacion_resultado.pack()
+            guardar_button = tk.Button(root, text="Guardar Imagen", command=rotacion_instancia.guardar_imagen)
+            guardar_button.pack()
+
+            original_photo = ImageTk.PhotoImage(Image.fromarray(rotacion_instancia.original_image))
+            original_label = tk.Label(root, image=original_photo)
+            original_label.pack()
+
+            root.mainloop()
+
+    def aplicar_espejo (self):
+        if self.check_gris.isChecked():
+            espejo_transformar = Espejo_transformar()
+            original_image = self.imagen1
+            original_grayscale = espejo_transformar.convertir_a_grises(original_image)
+
+            horizontal_image = espejo_transformar.espejo_horizontal(original_grayscale)
+            vertical_image = espejo_transformar.espejo_vertical(original_grayscale)
+            diagonal_image = espejo_transformar.espejo_diagonal(original_grayscale)
+
+            espejo_transformar.mostrar_imagenes(original_grayscale, horizontal_image, vertical_image, diagonal_image)
+            espejo_transformar.save_images(original_grayscale, horizontal_image, vertical_image, diagonal_image)
+
+        else:
+            image_manipulator = ImageManipulator()
+            original_image =  cv2.cvtColor(self.imagen1, cv2.COLOR_BGR2RGB)
+            
+            imagen_espejo_horizontal = image_manipulator.espejo_horizontal(original_image)
+            imagen_espejo_vertical = image_manipulator.espejo_vertical(original_image)
+            imagen_espejo_diagonal = image_manipulator.espejo_diagonal(original_image)
+
+            image_manipulator.mostrar_imagenes(original_image, imagen_espejo_horizontal, imagen_espejo_vertical, imagen_espejo_diagonal)
+            image_manipulator.save_images(original_image, imagen_espejo_horizontal, imagen_espejo_vertical, imagen_espejo_diagonal)
+            
+#-----------------------------BORDES------------------------------------------------------------------------------------------
+    def aplicar_canny(self):
+        imagen = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+
+        imagen_suavizada = cv2.blur(imagen, (3, 3))  
+
+        imagen_suavizada = suavizar_imagen(imagen)
+
+        magnitud_gradiente, direccion_gradiente = calcular_gradientes(imagen_suavizada)
+
+        bordes_suprimidos = suprimir_no_maximos(magnitud_gradiente, direccion_gradiente)
+
+        bordes_suprimidos = np.uint8(bordes_suprimidos)
+
+        umbral_bajo = 50
+        umbral_alto = 255
+        bordes_umbralizados = umbralizar(bordes_suprimidos, umbral_bajo, umbral_alto)
+
+        kernel = np.ones((2,2), np.uint8)
+        bordes_umbralizados_dilatados = cv2.dilate(bordes_umbralizados, kernel, iterations=1)
+
+        cv2.imwrite('bordes_detectados_canny.png', bordes_umbralizados_dilatados)
+
+        fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+        axes[0].imshow(imagen, cmap='gray')
+        axes[0].set_title('Imagen Original a Blanco y Negro')
+        axes[0].axis('off')
+
+        axes[1].imshow(bordes_umbralizados_dilatados, cmap='gray')
+        axes[1].set_title('Bordes Detectados')
+        axes[1].axis('off')
+
+        plt.show()
+
+    def aplicar_sobel(self):
+        imagen_original = self.imagen1
+        bordes_sobel = detectar_bordes_sobel(imagen_original)
+        imagen_en_gris = cv2.cvtColor(imagen_original, cv2.COLOR_BGR2GRAY)
+        plot_images(imagen_en_gris, bordes_sobel, "Imagen en Gris", "Bordes detectados con Sobel")
+        
+
+    def aplicar_prewitt(self):
+        imagen = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+    
+        kernel_prewitt_x = np.array([[-1, 0, 1],
+                                    [-1, 0, 1],
+                                    [-1, 0, 1]])
+
+        kernel_prewitt_y = np.array([[-1, -1, -1],
+                                    [0, 0, 0],
+                                    [1, 1, 1]])
+
+        edges_x = convolucion(imagen.astype(np.float32), kernel_prewitt_x)
+        edges_y = convolucion(imagen.astype(np.float32), kernel_prewitt_y)
+        edges = np.sqrt(np.square(edges_x) + np.square(edges_y))
+
+        plt.figure(figsize=(12, 6))
+        plt.subplot(1, 2, 1)
+        plt.imshow(imagen, cmap='gray')
+        plt.title('Imagen Original')
+        plt.subplot(1, 2, 2)
+        plt.imshow(edges, cmap='gray')
+        plt.title('Bordes detectados (Prewitt)')
+        plt.show()
+
+    def aplicar_gradiente(self):
+
+        imagen_gris =cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+
+        gradiente_x, gradiente_y, bordes_detectados = detectar_bordes(imagen_gris)
+
+        cv2.imshow('Gradiente X', gradiente_x)
+        cv2.imshow('Gradiente Y', gradiente_y)
+        cv2.imshow('Bordes Detectados', bordes_detectados)
+        key = cv2.waitKey(0)  
+        cv2.destroyAllWindows()
+        if key == ord('s'):
+            guardar_imagen_ruta(bordes_detectados)
+    
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     ventana = miApp()
