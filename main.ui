@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>826</width>
-    <height>608</height>
+    <width>1062</width>
+    <height>609</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -136,7 +136,7 @@
        <widget class="QCheckBox" name="check_gris">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>20</x>
           <y>550</y>
           <width>281</width>
           <height>20</height>
@@ -152,13 +152,13 @@
         <rect>
          <x>340</x>
          <y>10</y>
-         <width>481</width>
+         <width>701</width>
          <height>590</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">QWidget {
-    background-color: rgb(221, 201, 150);
+        <string notr="true">rgbQWidget {
+    background-color: rgb(230, 237, 255);
 }
 
 QPushButton{
@@ -180,7 +180,7 @@ QPushButton:hover {
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>10</y>
+          <y>0</y>
           <width>221</width>
           <height>161</height>
          </rect>
@@ -264,10 +264,16 @@ QPushButton:hover {
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>185</y>
+          <y>170</y>
           <width>221</width>
           <height>24</height>
          </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+	background-color: rgb(170, 85, 255);
+	border-radius: 20px;
+}</string>
         </property>
         <property name="text">
          <string>Negativo</string>
@@ -277,7 +283,7 @@ QPushButton:hover {
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>220</y>
+          <y>200</y>
           <width>221</width>
           <height>161</height>
          </rect>
@@ -360,9 +366,9 @@ QPushButton:hover {
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>390</y>
+          <y>370</y>
           <width>221</width>
-          <height>191</height>
+          <height>241</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -425,7 +431,7 @@ QPushButton:hover {
           <string>Escalado</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="btn_inclinacion">
+        <widget class="QPushButton" name="btn_inclinacion_vertical">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -435,14 +441,27 @@ QPushButton:hover {
           </rect>
          </property>
          <property name="text">
-          <string>Inclinacion</string>
+          <string>Inclinacion Vertical </string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_inclinacion_hori">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>150</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Inclinacion Horizontal</string>
          </property>
         </widget>
         <widget class="QPushButton" name="btn_espejo">
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>150</y>
+           <y>180</y>
            <width>201</width>
            <height>24</height>
           </rect>
@@ -456,25 +475,25 @@ QPushButton:hover {
         <property name="geometry">
          <rect>
           <x>240</x>
-          <y>10</y>
+          <y>0</y>
           <width>221</width>
           <height>101</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">QGroupBox{
-	background-color: rgb(32, 198, 122);
+	background-color: rgb(224, 255, 183);
 	color: rgb(0, 0, 0);
 }
 
 QPushButton{
-	background-color: rgb(157, 192, 157);
+	background-color: rgb(189, 218, 162);
 	border-radius: 20px;
 }
 
 QPushButton:hover {
 	color: rgb(255,255,255);
-	background-color: rgb(63, 136, 128);
+	background-color: rgb(170, 170, 0);
 }</string>
         </property>
         <property name="title">
@@ -511,7 +530,7 @@ QPushButton:hover {
         <property name="geometry">
          <rect>
           <x>240</x>
-          <y>115</y>
+          <y>110</y>
           <width>221</width>
           <height>221</height>
          </rect>
@@ -734,9 +753,137 @@ QPushButton:hover {
           <height>25</height>
          </rect>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+	background-color: rgb(136, 136, 101);
+	border-radius: 20px;
+}</string>
+        </property>
         <property name="text">
          <string>K-means</string>
         </property>
+       </widget>
+       <widget class="QGroupBox" name="filtros_2">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>0</y>
+          <width>221</width>
+          <height>171</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox{
+	background-color:rgb(178, 199, 255);
+	color: rgb(0, 0, 0);
+}
+
+QPushButton{
+	background-color: rgb(111, 234, 230) ;
+	border-radius: 20px;
+}
+
+QPushButton:hover {
+	color: rgb(255,255,255);
+	background-color: rgb(173, 207, 196);
+}</string>
+        </property>
+        <property name="title">
+         <string>Bordes</string>
+        </property>
+        <widget class="QPushButton" name="btn_borde_canny">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Borde Canny</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_borde_sobel">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Borde Sobel</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_borde_prewitt">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Borde Prewitt</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_borde_gradiente">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>120</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Borde Gradiente</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="conversiones_2">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>190</y>
+          <width>221</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox{
+	background-color: rgb(222, 223, 197);
+	color: rgb(0, 0, 0);
+}
+
+QPushButton{
+	background-color: rgb(200, 201, 181);
+	border-radius: 20px;
+}
+
+QPushButton:hover {
+	background-color: rgb(178, 179,159);
+}</string>
+        </property>
+        <property name="title">
+         <string>Operaciones</string>
+        </property>
+        <widget class="QPushButton" name="btn_contraste">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Contraste</string>
+         </property>
+        </widget>
        </widget>
       </widget>
      </widget>

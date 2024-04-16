@@ -1,15 +1,12 @@
 import cv2
 import numpy as np
 
-import cv2
-import numpy as np
-
 def traslacion(imagen, traslacion_x, traslacion_y):
     if imagen is None:
         print("No se pudo cargar la imagen")
         return None
     else:
-        # Verificar si la imagen es a color o en escala de grises
+        # Verificar si la imagen es a color o en escala de gris
         if len(imagen.shape) == 3:  # Imagen a color
             # Definir la matriz de traslación
             matriz_traslacion = np.float32([[1, 0, traslacion_x], [0, 1, traslacion_y]])
