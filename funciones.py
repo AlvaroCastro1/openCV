@@ -61,6 +61,10 @@ from morfologicas.op_black_hat import black_hat
 from morfologicas.op_esqueleto import esqueletonizar
 from morfologicas.op_rellenar_bordes import rellenar_formas
 
+from conversiones_rgb.conver import rgb2bgr, rgb2cmyk, rgb2hsv
+
+from morfologicas.Hough import imagenHough
+
 class miApp(QMainWindow):
 
     def __init__(self):
@@ -121,6 +125,13 @@ class miApp(QMainWindow):
         self.btn_black.clicked.connect(self.aplicar_black_hat)
         self.btn_esqueleto.clicked.connect(self.aplicar_esqueleto)
         self.btn_rellenar.clicked.connect(self.aplicar_relleno)
+
+        self.btn_rgb.clicked.connect(self.convertir_rgb)
+        self.btn_bgr.clicked.connect(self.convertir_bgr)
+        self.btn_cmyk.clicked.connect(self.convertir_cmyk)
+        self.btn_hsv.clicked.connect(self.convertir_hsv)
+
+        self.btn_transformada.clicked.connect(self.aplicar_transformada)
 #-------------------------------------FUNCIONES DE LAS DIFERENTES OPERACIONES-------------------------------------------------------------
     def mostrar_imagen_y_actualizar(self, etiqueta, imagen):
         if imagen == 'imagen1':
@@ -935,6 +946,95 @@ class miApp(QMainWindow):
         
         if key == ord('s'):
             guardar_imagen_ruta(rellenada)
+
+    def convertir_rgb(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+        else:
+            if len(self.imagen1.shape) == 2:
+                RGB = cv2.cvtColor(self.imagen1, cv2.COLOR_GRAY2BGR)
+            else:
+                RGB = self.imagen1
+
+        cv2.namedWindow('RGB',cv2.WINDOW_NORMAL)
+        cv2.imshow('RGB', RGB)
+        key = cv2.waitKey(0)  
+        cv2.destroyAllWindows()
+        
+        if key == ord('s'):
+            guardar_imagen_ruta(RGB)
+
+    def convertir_bgr(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+        else:
+            if len(self.imagen1.shape) == 2:
+                img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_GRAY2BGR)
+            else:
+                img1 = self.imagen1
+
+        BGR = rgb2bgr(img1)
+        cv2.namedWindow('BGR',cv2.WINDOW_NORMAL)
+        cv2.imshow('BGR', BGR)
+        key = cv2.waitKey(0)  
+        cv2.destroyAllWindows()
+        
+        if key == ord('s'):
+            guardar_imagen_ruta(BGR)
+
+    def convertir_cmyk(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+        else:
+            if len(self.imagen1.shape) == 2:
+                img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_GRAY2BGR)
+            else:
+                img1 = self.imagen1
+
+        cmyk = rgb2cmyk(img1)
+        cv2.namedWindow('cmyk',cv2.WINDOW_NORMAL)
+        cv2.imshow('cmyk', cmyk)
+        key = cv2.waitKey(0)  
+        cv2.destroyAllWindows()
+        
+        if key == ord('s'):
+            guardar_imagen_ruta(cmyk)
+
+    def convertir_hsv(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+        else:
+            if len(self.imagen1.shape) == 2:
+                img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_GRAY2BGR)
+            else:
+                img1 = self.imagen1
+
+        hsv = rgb2hsv(img1)
+        cv2.namedWindow('hsv',cv2.WINDOW_NORMAL)
+        cv2.imshow('hsv', hsv)
+        key = cv2.waitKey(0)  
+        cv2.destroyAllWindows()
+        
+        if key == ord('s'):
+            guardar_imagen_ruta(hsv)
+
+    def aplicar_transformada(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+        else:
+            if len(self.imagen1.shape) == 2:
+                img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_GRAY2BGR)
+            else:
+                img1 = self.imagen1
+
+        img_con_lineas = imagenHough(img1)
+        cv2.namedWindow("imagen con lineas", cv2.WINDOW_NORMAL)
+        cv2.imshow("imagen con lineas", img_con_lineas)
+        key = cv2.waitKey(0)  
+        cv2.destroyAllWindows()
+        
+        if key == ord('s'):
+            guardar_imagen_ruta(img_con_lineas)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

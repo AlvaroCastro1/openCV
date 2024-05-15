@@ -1147,7 +1147,7 @@ QPushButton:hover {
          <string>BGR</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="btn_bgr_2">
+       <widget class="QPushButton" name="btn_cmyk">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -1160,7 +1160,7 @@ QPushButton:hover {
          <string>CMYK</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="btn_bgr_3">
+       <widget class="QPushButton" name="btn_hsv">
         <property name="geometry">
          <rect>
           <x>10</x>
