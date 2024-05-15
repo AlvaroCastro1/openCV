@@ -56,6 +56,11 @@ from kmeans.kmeans import segmentar_con_kmeans
 
 from guardar import guardar_imagen_ruta
 
+from morfologicas.op_top_hat import top_hat
+from morfologicas.op_black_hat import black_hat
+from morfologicas.op_esqueleto import esqueletonizar
+from morfologicas.op_rellenar_bordes import rellenar_formas
+
 class miApp(QMainWindow):
 
     def __init__(self):
@@ -112,7 +117,10 @@ class miApp(QMainWindow):
         self.btn_borde_prewitt.clicked.connect(self.aplicar_prewitt)
         self.btn_borde_gradiente.clicked.connect(self.aplicar_gradiente)
 
-      
+        self.btn_top.clicked.connect(self.aplicar_top_hat)
+        self.btn_black.clicked.connect(self.aplicar_black_hat)
+        self.btn_esqueleto.clicked.connect(self.aplicar_esqueleto)
+        self.btn_rellenar.clicked.connect(self.aplicar_relleno)
 #-------------------------------------FUNCIONES DE LAS DIFERENTES OPERACIONES-------------------------------------------------------------
     def mostrar_imagen_y_actualizar(self, etiqueta, imagen):
         if imagen == 'imagen1':
@@ -851,6 +859,83 @@ class miApp(QMainWindow):
         if key == ord('s'):
             guardar_imagen_ruta(bordes_detectados)
     
+    def aplicar_top_hat(self):
+        tam_kernel = 3
+        if not validar_1_imagen(self.imagen1):
+            return
+        else:
+            img1 = self.imagen1
+
+        top_hat_image = top_hat(img1, tam_kernel)
+
+        cv2.namedWindow('Top Hat',cv2.WINDOW_NORMAL)
+        cv2.imshow('Top Hat', top_hat_image)
+        key = cv2.waitKey(0)  
+        cv2.destroyAllWindows()
+        
+        if key == ord('s'):
+            guardar_imagen_ruta(top_hat_image)
+
+    def aplicar_black_hat(self):
+        tam_kernel = 3
+        if not validar_1_imagen(self.imagen1):
+            return
+        else:
+            img1 = self.imagen1
+
+        top_hat_image = black_hat(img1, tam_kernel)
+
+        cv2.namedWindow('Black Hat',cv2.WINDOW_NORMAL)
+        cv2.imshow('Black Hat', top_hat_image)
+        key = cv2.waitKey(0)  
+        cv2.destroyAllWindows()
+        
+        if key == ord('s'):
+            guardar_imagen_ruta(top_hat_image)
+
+    def aplicar_esqueleto(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+        else:
+            if (len(self.imagen1.shape)==3):
+                # Si la imagen tiene 3 canales, es una imagen a color y se convierte a grises
+                img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+            else:
+                # en escala de grises
+                img1 = self.imagen1
+
+
+        # Binariza la imagen
+        _, binaria = cv2.threshold(img1, 127, 255, cv2.THRESH_BINARY)
+
+        # Esqueletoniza la imagen binaria
+        esqueleto = esqueletonizar(binaria)
+
+
+        cv2.namedWindow('Esqueleto',cv2.WINDOW_NORMAL)
+        cv2.imshow('Esqueleto', esqueleto)
+        key = cv2.waitKey(0)  
+        cv2.destroyAllWindows()
+        
+        if key == ord('s'):
+            guardar_imagen_ruta(esqueleto)
+
+    def aplicar_relleno(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+        else:
+            img1 = self.imagen1
+
+        rellenada = rellenar_formas(img1)
+
+        cv2.namedWindow('Rellenada',cv2.WINDOW_NORMAL)
+        cv2.imshow('Rellenada', rellenada)
+        key = cv2.waitKey(0)  
+        cv2.destroyAllWindows()
+        
+        if key == ord('s'):
+            guardar_imagen_ruta(rellenada)
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     ventana = miApp()

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1062</width>
+    <width>1276</width>
     <height>609</height>
    </rect>
   </property>
@@ -50,7 +50,7 @@
          <x>10</x>
          <y>10</y>
          <width>321</width>
-         <height>590</height>
+         <height>581</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -151,7 +151,7 @@
        <property name="geometry">
         <rect>
          <x>340</x>
-         <y>10</y>
+         <y>0</y>
          <width>701</width>
          <height>590</height>
         </rect>
@@ -180,26 +180,26 @@ QPushButton:hover {
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>0</y>
+          <y>10</y>
           <width>221</width>
-          <height>161</height>
+          <height>151</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">QGroupBox{
-	background-color: rgb(217, 209, 194);
+	background-color: rgb(222, 223, 197);
 	color: rgb(0, 0, 0);
 }
 
 QPushButton{
-	background-color: rgb(187, 184, 175);
+	background-color: rgb(200, 201, 181);
 	border-radius: 20px;
 }
 
 QPushButton:hover {
-	color: rgb(255,255,255);
-	background-color: rgb(97, 105, 83);
-}</string>
+	background-color: rgb(178, 179,159);
+}
+</string>
         </property>
         <property name="title">
          <string>Operaciones Basicas</string>
@@ -271,8 +271,12 @@ QPushButton:hover {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton{
-	background-color: rgb(170, 85, 255);
+	background-color: rgb(171, 198, 159);
 	border-radius: 20px;
+}
+QPushButton:hover {
+	color: rgb(255,255,255);
+	background-color: rgb(182, 204, 181);
 }</string>
         </property>
         <property name="text">
@@ -290,17 +294,18 @@ QPushButton:hover {
         </property>
         <property name="styleSheet">
          <string notr="true">QGroupBox{
-	background-color: rgb(197, 223, 224);
+	background-color: rgb(224, 255, 183);
 	color: rgb(0, 0, 0);
 }
 
 QPushButton{
-	background-color: rgb(141, 174, 195);
+	background-color: rgb(189, 218, 162);
 	border-radius: 20px;
 }
 
 QPushButton:hover {
-	background-color: rgb(41, 174, 195);
+	color: rgb(255,255,255);
+	background-color: rgb(235, 255, 213);
 }</string>
         </property>
         <property name="title">
@@ -373,12 +378,12 @@ QPushButton:hover {
         </property>
         <property name="styleSheet">
          <string notr="true">QGroupBox{
-	background-color: rgb(189, 234, 219);
+	background-color: rgb(210, 255, 212);
 	color: rgb(0, 0, 0);
 }
 
 QPushButton{
-	background-color: rgb(221, 234, 221);
+	background-color:rgb(208, 208, 208);
 	border-radius: 20px;
 }
 
@@ -475,25 +480,25 @@ QPushButton:hover {
         <property name="geometry">
          <rect>
           <x>240</x>
-          <y>0</y>
+          <y>280</y>
           <width>221</width>
-          <height>101</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">QGroupBox{
-	background-color: rgb(224, 255, 183);
+	background-color: rgb(255, 208, 224);
 	color: rgb(0, 0, 0);
 }
 
 QPushButton{
-	background-color: rgb(189, 218, 162);
+	background-color: rgb(221, 171, 190);
 	border-radius: 20px;
 }
 
 QPushButton:hover {
 	color: rgb(255,255,255);
-	background-color: rgb(170, 170, 0);
+	background-color: rgb(255, 175, 242);
 }</string>
         </property>
         <property name="title">
@@ -503,7 +508,7 @@ QPushButton:hover {
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>30</y>
+           <y>20</y>
            <width>201</width>
            <height>24</height>
           </rect>
@@ -516,7 +521,7 @@ QPushButton:hover {
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>60</y>
+           <y>50</y>
            <width>201</width>
            <height>24</height>
           </rect>
@@ -526,28 +531,381 @@ QPushButton:hover {
          </property>
         </widget>
        </widget>
+       <widget class="QGroupBox" name="filtros">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>250</y>
+          <width>221</width>
+          <height>101</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox{
+	background-color: rgb(168, 218, 194);
+	color: rgb(0, 0, 0);
+}
+
+QPushButton{
+	background-color: rgb(215, 255, 228);
+	border-radius: 20px;
+}
+
+QPushButton:hover {
+	color: rgb(255,255,255);
+	background-color: rgb(209, 237, 240);
+}</string>
+        </property>
+        <property name="title">
+         <string>Filtros</string>
+        </property>
+        <widget class="QPushButton" name="btn_filtro_media">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Media</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_filtro_mediana">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Mediana</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="filtros_2">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>10</y>
+          <width>221</width>
+          <height>161</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox{
+	background-color: rgb(189, 234, 219);
+	color: rgb(0, 0, 0);
+}
+
+QPushButton{
+	background-color: rgb(221, 234, 221);
+	border-radius: 20px;
+}
+
+QPushButton:hover {
+	background-color: rgb(173, 234, 218);
+}</string>
+        </property>
+        <property name="title">
+         <string>Bordes</string>
+        </property>
+        <widget class="QPushButton" name="btn_borde_canny">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Borde Canny</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_borde_sobel">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Borde Sobel</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_borde_prewitt">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Borde Prewitt</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_borde_gradiente">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>120</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Borde Gradiente</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="conversiones_2">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>360</y>
+          <width>221</width>
+          <height>121</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox{
+	background-color: rgb(196, 214, 255);
+	color: rgb(0, 0, 0);
+}
+QPushButton{
+	background-color: rgb(215, 255, 228);
+	border-radius: 20px;
+}
+
+QPushButton:hover {
+	color: rgb(255,255,255);
+	background-color: rgb(230, 226, 255);
+}</string>
+        </property>
+        <property name="title">
+         <string>Filtros Artisticos </string>
+        </property>
+        <widget class="QPushButton" name="btn_lentes">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+	background-color: rgb(155, 157, 193);
+	border-radius: 20px;
+}</string>
+         </property>
+         <property name="text">
+          <string>Lentes</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_bigote">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>50</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+	background-color: rgb(155, 157, 193);
+	border-radius: 20px;
+}</string>
+         </property>
+         <property name="text">
+          <string>Bigote</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_corona">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>80</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+	background-color: rgb(155, 157, 193);
+	border-radius: 20px;
+}</string>
+         </property>
+         <property name="text">
+          <string>Corona</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="conversiones_3">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>10</y>
+          <width>221</width>
+          <height>261</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox{
+	background-color:  rgb(213, 183, 255);
+	color: rgb(0, 0, 0);
+}
+
+QPushButton{
+	background-color: rgb(200, 156, 209);
+	border-radius: 20px;
+}
+
+QPushButton:hover {
+	background-color:rgb(226, 192, 230);
+}
+</string>
+        </property>
+        <property name="title">
+         <string>Morfologicas </string>
+        </property>
+        <widget class="QPushButton" name="btn_dilatacion">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Dilatación</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_erosion">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>50</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Erosición</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_apertura">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>80</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Apertura</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_esqueleto">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>200</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Esquelitizacion</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_clausura">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>110</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Clausura</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_rellenar">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>230</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Rellenar Bordes</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_top">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>140</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Top Hat</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_black">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>170</y>
+           <width>201</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Black Hat</string>
+         </property>
+        </widget>
+       </widget>
        <widget class="QGroupBox" name="Umbrales">
         <property name="geometry">
          <rect>
           <x>240</x>
-          <y>110</y>
+          <y>370</y>
           <width>221</width>
           <height>221</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">QGroupBox{
-	background-color: rgb(131, 156, 181);
+	background-color: rgb(232, 216, 255);
 	color: rgb(0, 0, 0);
 }
 
 QPushButton{
-	background-color: rgb(177, 225, 233);
+	background-color: rgb(205, 177, 217);
 	border-radius: 20px;
 }
 
 QPushButton:hover {
-	background-color: rgb(110, 225, 233);
+	background-color: rgb(211, 175, 212);
 }</string>
         </property>
         <property name="title">
@@ -635,66 +993,34 @@ QPushButton:hover {
          </property>
         </widget>
        </widget>
-       <widget class="QGroupBox" name="filtros">
+       <widget class="QPushButton" name="btn_kmeans">
         <property name="geometry">
          <rect>
-          <x>240</x>
-          <y>340</y>
+          <x>470</x>
+          <y>180</y>
           <width>221</width>
-          <height>101</height>
+          <height>25</height>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">QGroupBox{
-	background-color: rgb(238, 174, 170);
-	color: rgb(0, 0, 0);
-}
-
-QPushButton{
-	background-color: rgb(218, 174, 170);
+         <string notr="true">QPushButton{
+	background-color: rgb(161, 185, 207);
 	border-radius: 20px;
 }
-
 QPushButton:hover {
 	color: rgb(255,255,255);
-	background-color: rgb(178, 174, 170);
+	background-color: rgb(156, 213, 209);
 }</string>
         </property>
-        <property name="title">
-         <string>Filtros</string>
+        <property name="text">
+         <string>K-means</string>
         </property>
-        <widget class="QPushButton" name="btn_filtro_media">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>30</y>
-           <width>201</width>
-           <height>24</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Media</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="btn_filtro_mediana">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>60</y>
-           <width>201</width>
-           <height>24</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Mediana</string>
-         </property>
-        </widget>
        </widget>
        <widget class="QGroupBox" name="conversiones">
         <property name="geometry">
          <rect>
-          <x>240</x>
-          <y>445</y>
+          <x>470</x>
+          <y>490</y>
           <width>221</width>
           <height>101</height>
          </rect>
@@ -721,7 +1047,7 @@ QPushButton:hover {
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>35</y>
+           <y>30</y>
            <width>201</width>
            <height>24</height>
           </rect>
@@ -744,117 +1070,41 @@ QPushButton:hover {
          </property>
         </widget>
        </widget>
-       <widget class="QPushButton" name="btn_kmeans">
+       <widget class="QPushButton" name="btn_contraste">
         <property name="geometry">
          <rect>
-          <x>240</x>
-          <y>555</y>
+          <x>470</x>
+          <y>210</y>
           <width>221</width>
-          <height>25</height>
+          <height>24</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton{
-	background-color: rgb(136, 136, 101);
+	background-color: rgb(116, 168, 164);
 	border-radius: 20px;
+}
+QPushButton:hover {
+	color: rgb(255,255,255);
+	background-color: rgb(139, 199, 154);
 }</string>
         </property>
         <property name="text">
-         <string>K-means</string>
+         <string>Contraste</string>
         </property>
        </widget>
-       <widget class="QGroupBox" name="filtros_2">
-        <property name="geometry">
-         <rect>
-          <x>470</x>
-          <y>0</y>
-          <width>221</width>
-          <height>171</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QGroupBox{
-	background-color:rgb(178, 199, 255);
-	color: rgb(0, 0, 0);
-}
-
-QPushButton{
-	background-color: rgb(111, 234, 230) ;
-	border-radius: 20px;
-}
-
-QPushButton:hover {
-	color: rgb(255,255,255);
-	background-color: rgb(173, 207, 196);
-}</string>
-        </property>
-        <property name="title">
-         <string>Bordes</string>
-        </property>
-        <widget class="QPushButton" name="btn_borde_canny">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>30</y>
-           <width>201</width>
-           <height>24</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Borde Canny</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="btn_borde_sobel">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>60</y>
-           <width>201</width>
-           <height>24</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Borde Sobel</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="btn_borde_prewitt">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>90</y>
-           <width>201</width>
-           <height>24</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Borde Prewitt</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="btn_borde_gradiente">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>120</y>
-           <width>201</width>
-           <height>24</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Borde Gradiente</string>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QGroupBox" name="conversiones_2">
-        <property name="geometry">
-         <rect>
-          <x>470</x>
-          <y>190</y>
-          <width>221</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QGroupBox{
+      </widget>
+      <widget class="QGroupBox" name="conversiones_4">
+       <property name="geometry">
+        <rect>
+         <x>1040</x>
+         <y>10</y>
+         <width>221</width>
+         <height>151</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QGroupBox{
 	background-color: rgb(222, 223, 197);
 	color: rgb(0, 0, 0);
 }
@@ -867,24 +1117,85 @@ QPushButton{
 QPushButton:hover {
 	background-color: rgb(178, 179,159);
 }</string>
+       </property>
+       <property name="title">
+        <string>Conversion entre espacios</string>
+       </property>
+       <widget class="QPushButton" name="btn_rgb">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>201</width>
+          <height>24</height>
+         </rect>
         </property>
-        <property name="title">
-         <string>Operaciones</string>
+        <property name="text">
+         <string>RGB</string>
         </property>
-        <widget class="QPushButton" name="btn_contraste">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>20</y>
-           <width>201</width>
-           <height>24</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Contraste</string>
-         </property>
-        </widget>
        </widget>
+       <widget class="QPushButton" name="btn_bgr">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>201</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>BGR</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_bgr_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>201</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>CMYK</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_bgr_3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>110</y>
+          <width>201</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>HSV</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QPushButton" name="btn_transformada">
+       <property name="geometry">
+        <rect>
+         <x>1040</x>
+         <y>180</y>
+         <width>221</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{
+	background-color: rgb(161, 185, 207);
+	border-radius: 20px;
+}
+QPushButton:hover {
+	color: rgb(255,255,255);
+	background-color: rgb(156, 213, 209);
+}</string>
+       </property>
+       <property name="text">
+        <string>Transformada de Hough</string>
+       </property>
       </widget>
      </widget>
     </item>
