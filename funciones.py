@@ -60,11 +60,20 @@ from morfologicas.op_top_hat import top_hat
 from morfologicas.op_black_hat import black_hat
 from morfologicas.op_esqueleto import esqueletonizar
 from morfologicas.op_rellenar_bordes import rellenar_formas
+from morfologicas.dilatacion import dilatar_imagen
+#from morfologicas.erosion import 
+from morfologicas.apertura import dilatacion, erosion
+from morfologicas.cierre import  dilatacion, erosion
 
 from conversiones_rgb.conver import rgb2bgr, rgb2cmyk, rgb2hsv
 
 from morfologicas.Hough import imagenHough
 
+from filtrosArtisticos.bigote import superponer_bigote, mainBigote
+from filtrosArtisticos.corona import superponer_corona, mainCorona
+from filtrosArtisticos.lentes import superponer_lentes, mainLentes
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------
 class miApp(QMainWindow):
 
     def __init__(self):
@@ -125,6 +134,10 @@ class miApp(QMainWindow):
         self.btn_black.clicked.connect(self.aplicar_black_hat)
         self.btn_esqueleto.clicked.connect(self.aplicar_esqueleto)
         self.btn_rellenar.clicked.connect(self.aplicar_relleno)
+        self.btn_dilatacion.clicked.connect(self.aplicar_dilatacion)
+        self.btn_erosion.clicked.connect(self.aplicar_erosion)
+        self.btn_apertura.clicked.connect(self.aplicar_apertura)
+        self.btn_clausura.clicked.connect(self.aplicar_clausura)
 
         self.btn_rgb.clicked.connect(self.convertir_rgb)
         self.btn_bgr.clicked.connect(self.convertir_bgr)
@@ -132,6 +145,12 @@ class miApp(QMainWindow):
         self.btn_hsv.clicked.connect(self.convertir_hsv)
 
         self.btn_transformada.clicked.connect(self.aplicar_transformada)
+        
+        self.btn_lentes.clicked.connect(self.aplicar_lentes)
+        self.btn_bigote.clicked.connect(self.aplicar_bigote)
+        self.btn_corona.clicked.connect(self.aplicar_corona)
+
+
 #-------------------------------------FUNCIONES DE LAS DIFERENTES OPERACIONES-------------------------------------------------------------
     def mostrar_imagen_y_actualizar(self, etiqueta, imagen):
         if imagen == 'imagen1':
@@ -869,6 +888,80 @@ class miApp(QMainWindow):
         cv2.destroyAllWindows()
         if key == ord('s'):
             guardar_imagen_ruta(bordes_detectados)
+        
+#-----------------------------MORFOLOGICAS-----------------------------------------------------------------------------
+    def aplicar_apertura(self):
+        if self.imagen1 is None:
+            print("Error: No se ha seleccionado ninguna imagen.")
+            return
+        else:
+            imagen = cv2.cvtColor(self.imagen1, cv2.COLOR_BGR2GRAY)  
+
+            kernel = np.ones((5, 5), np.uint8)
+
+            erosionada = erosion(imagen, kernel)
+            apertura = dilatacion(erosionada, kernel)
+
+            cv2.imshow('Imagen Original', imagen)
+            cv2.imshow('Imagen Erosionada', erosionada)
+            cv2.imshow('Imagen con Apertura', apertura)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+    def aplicar_clausura(self):
+         
+        if self.imagen1 is None:
+            print("Error: No se ha seleccionado ninguna imagen.")
+            return
+        else:
+            imagen = cv2.cvtColor(self.imagen1, cv2.COLOR_BGR2GRAY)  
+            kernel = np.ones((5, 5), np.uint8)
+            
+            # Aplicar dilatación seguida de erosión (cierre)
+            dilatada = dilatacion(imagen, kernel)
+            cierre_manual = erosion(dilatada, kernel)
+
+            cv2.imshow('Imagen Original', imagen)
+            cv2.imshow('Imagen Dilatada', dilatada)
+            cv2.imshow('Imagen con Cierre', cierre_manual)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+
+    def aplicar_dilatacion(self):
+        if self.imagen1 is None:
+            print("Error: No se ha seleccionado ninguna imagen.")
+            return
+        else:
+            img_binaria = cv2.cvtColor(self.imagen1, cv2.COLOR_BGR2GRAY)  
+            img_dilatada = dilatar_imagen(img_binaria)
+
+            cv2.imshow('Imagen Binaria Original', img_binaria)
+            cv2.imshow('Imagen Binaria Dilatada', img_dilatada)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+    def aplicar_erosion(self):
+        if self.imagen1 is None:
+            print("Error: No se ha seleccionado ninguna imagen.")
+            return
+        else:
+            img_binaria = cv2.cvtColor(self.imagen1, cv2.COLOR_BGR2GRAY)  
+            cv2.imshow('Imagen Binaria Original', img_binaria)
+            
+            kernel = np.ones((3,3), np.uint8)  
+            alto, ancho = img_binaria.shape
+            img_erosionada = np.zeros_like(img_binaria)
+
+            for y in range(1, alto - 1):
+                for x in range(1, ancho - 1):
+                    submatriz = img_binaria[y-1:y+2, x-1:x+2]
+                    if np.min(submatriz * kernel) == 255:
+                        img_erosionada[y, x] = 255
+
+            cv2.imshow('Imagen Binaria Erosionada', img_erosionada)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
     
     def aplicar_top_hat(self):
         tam_kernel = 3
@@ -946,6 +1039,8 @@ class miApp(QMainWindow):
         
         if key == ord('s'):
             guardar_imagen_ruta(rellenada)
+    
+#------------------------------------CONVERSIONES------------------------------------------------------------------
 
     def convertir_rgb(self):
         if not validar_1_imagen(self.imagen1):
@@ -1035,6 +1130,18 @@ class miApp(QMainWindow):
         
         if key == ord('s'):
             guardar_imagen_ruta(img_con_lineas)
+
+    #----------------------------------------------------FILTROS ARTISTICOS
+
+    def aplicar_lentes(self):
+        mainLentes()
+
+    def aplicar_corona(self):
+        mainCorona()
+    
+    def aplicar_bigote(self):
+        mainBigote()
+      
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
