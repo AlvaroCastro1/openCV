@@ -1197,6 +1197,29 @@ QPushButton:hover {
         <string>Transformada de Hough</string>
        </property>
       </widget>
+      <widget class="QPushButton" name="btn_gradiente">
+       <property name="geometry">
+        <rect>
+         <x>1040</x>
+         <y>210</y>
+         <width>221</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{
+	background-color: rgb(161, 185, 207);
+	border-radius: 20px;
+}
+QPushButton:hover {
+	color: rgb(255,255,255);
+	background-color: rgb(156, 213, 209);
+}</string>
+       </property>
+       <property name="text">
+        <string>Gradiente Morfologico</string>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>

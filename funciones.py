@@ -64,6 +64,7 @@ from morfologicas.dilatacion import dilatar_imagen
 #from morfologicas.erosion import 
 from morfologicas.apertura import dilatacion, erosion
 from morfologicas.cierre import  dilatacion, erosion
+from morfologicas.gradiente_monrfologico import gradiente
 
 from conversiones_rgb.conver import rgb2bgr, rgb2cmyk, rgb2hsv
 
@@ -150,6 +151,7 @@ class miApp(QMainWindow):
         self.btn_bigote.clicked.connect(self.aplicar_bigote)
         self.btn_corona.clicked.connect(self.aplicar_corona)
 
+        self.btn_gradiente.clicked.connect(self.aplicar_gradiente_morf)
 
 #-------------------------------------FUNCIONES DE LAS DIFERENTES OPERACIONES-------------------------------------------------------------
     def mostrar_imagen_y_actualizar(self, etiqueta, imagen):
@@ -1142,6 +1144,20 @@ class miApp(QMainWindow):
     def aplicar_bigote(self):
         mainBigote()
       
+
+    def aplicar_gradiente_morf(self):
+        if not validar_1_imagen(self.imagen1):
+            return
+        else:
+            if len(self.imagen1.shape) == 2:
+                img1 = self.imagen1
+            else:
+                img1 = cv2.cvtColor( self.imagen1, cv2.COLOR_RGB2GRAY )
+        gradiente_img=gradiente(img1)
+        cv2.imshow('gradiente Morfológico', gradiente_img)
+
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
