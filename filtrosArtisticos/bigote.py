@@ -3,7 +3,7 @@ import numpy as np
 
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-bigote = cv2.imread('bigote1.png', cv2.IMREAD_UNCHANGED) #Se puedee cambiar
+bigote = cv2.imread('bigotes_images/bigote1.png', cv2.IMREAD_UNCHANGED) #Se puedee cambiar
 
 def superponer_bigote(frame, x, y, w, h, y_offset):
     bigote_resized = cv2.resize(bigote, (w, int(h/2)))  

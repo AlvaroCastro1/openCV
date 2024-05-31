@@ -14,7 +14,7 @@ def mainLentes():
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
     # Lista de imágenes de lentes
-    imagenes_lentes = ['lente7.png', 'lente3.png', 'lente4.png', 'lente5.png', 'lente6.png', 'lentes1.png']
+    imagenes_lentes = ['lentes_images/lente7.png', 'lentes_images/lente3.png', 'lentes_images/lente4.png', 'lentes_images/lente5.png', 'lentes_images/lente6.png', 'lentes_images/lentes1.png']
     lentes_index = 0
     lentes = cv2.imread(imagenes_lentes[lentes_index], -1)
     if lentes is None:

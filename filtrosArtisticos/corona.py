@@ -16,7 +16,7 @@ def superponer_corona(frame, x, y, w, h, y_offset, corona):
 def mainCorona():
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-    lista_coronas = ['corona1.png', 'corona2.png', 'corona3.png']
+    lista_coronas = ['coronas_images/corona1.png', 'coronas_images/corona2.png', 'coronas_images/corona3.png']
     corona_index = 0
     corona = cv2.imread(lista_coronas[corona_index], -1)
 
