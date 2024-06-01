@@ -74,6 +74,8 @@ from filtrosArtisticos.bigote import superponer_bigote, mainBigote
 from filtrosArtisticos.corona import superponer_corona, mainCorona
 from filtrosArtisticos.lentes import superponer_lentes, mainLentes
 
+        
+from momentos_hu import main as main_HU
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
 class miApp(QMainWindow):
 
@@ -152,6 +154,7 @@ class miApp(QMainWindow):
         self.btn_corona.clicked.connect(self.aplicar_corona)
 
         self.btn_gradiente.clicked.connect(self.aplicar_gradiente_morf)
+        self.btn_momentos.clicked.connect(self.aplicar_HU)
 
 #-------------------------------------FUNCIONES DE LAS DIFERENTES OPERACIONES-------------------------------------------------------------
     def mostrar_imagen_y_actualizar(self, etiqueta, imagen):
@@ -1158,6 +1161,23 @@ class miApp(QMainWindow):
 
         cv2.waitKey(0)
         cv2.destroyAllWindows()
+
+    def aplicar_HU(self):
+        if not validar_2_imagenes(self.imagen1, self.imagen2):
+            return
+
+        if len(self.imagen1.shape) == 3:
+            img1 = cv2.cvtColor(self.imagen1, cv2.COLOR_RGB2GRAY)
+        else:
+            img1 = self.imagen1
+        
+        if len(self.imagen2.shape) == 3:
+            img2 = cv2.cvtColor(self.imagen2, cv2.COLOR_RGB2GRAY)
+        else:
+            img2 = self.imagen2
+            
+        main_HU(img1, img2)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
