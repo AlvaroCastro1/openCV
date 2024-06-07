@@ -1,4 +1,5 @@
 ## Operaciones
+*hough.py* y *relleno*
 
 - *kernel*
 - *imagen*

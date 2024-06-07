@@ -39,13 +39,33 @@ kernel = np.ones((3, 3), np.uint8)
 # esqueleto = skeletonize(imagen_binaria // 255) * 255
 # cv2.imshow('Esqueletización', esqueleto.astype(np.uint8))
 
-from skimage.morphology import flood_fill
-imagen = cv2.imread('images/ochos.png', 0)
-_, imagen_binaria = cv2.threshold(imagen, 127, 255, cv2.THRESH_BINARY_INV)
+# imagen = cv2.imread('images/ochos.png', 0)
+# _, imagen_binaria = cv2.threshold(imagen, 127, 255, cv2.THRESH_BINARY)
+# imagen_relleno = imagen_binaria.copy()
+# cv2.floodFill(imagen_relleno,None, (127, 70), 255)
+# cv2.floodFill(imagen_relleno,None, (127, 127), 255)
+# cv2.imshow('rellenada', imagen_relleno)
 
-imagen_rellenada = flood_fill(imagen_binaria, (0, 0), 255)
-imagen_rellenada = cv2.bitwise_not(imagen_rellenada)
-cv2.imshow('rellenada', imagen_rellenada)
+# imagen = cv2.imread('images/cameraman.png', 0)
+# gradiente = cv2.morphologyEx(imagen, cv2.MORPH_GRADIENT, kernel)
+# cv2.imshow('Gradiente Morfológico', gradiente)
+
+# from skimage.transform import probabilistic_hough_line
+# from skimage.feature import canny
+# imagen = cv2.imread('images/hough2.png',0)
+# lienas_bordes = canny(imagen, sigma=2)
+# lines = probabilistic_hough_line(lienas_bordes, threshold=10, line_length=5, line_gap=3)
+# image_with_lines = imagen.copy()
+# for line in lines:
+#     p0, p1 = line
+#     cv2.line(image_with_lines, tuple(p0), tuple(p1), (0, 255, 0), 2)
+# cv2.imshow('Hough Transform', image_with_lines)
+
+momentos = cv2.moments(imagen)
+hu_momentos = cv2.HuMoments(momentos).flatten()
+print("Momentos de Hu:")
+for i, momento in enumerate(hu_momentos):
+    print(f"Hu[{i}] = {momento}")
 
 cv2.namedWindow("Original", cv2.WINDOW_NORMAL)
 cv2.imshow('Original', imagen)
